@@ -23,6 +23,9 @@ public class Main extends OpMode {
         float x = gamepad1.left_stick_x;
         float y = gamepad1.left_stick_y;
 
+        //button
+        boolean L1 = gamepad1.left_bumper;
+
         //log
         System.out.print("x axis : ");
         System.out.println(x);
@@ -30,6 +33,14 @@ public class Main extends OpMode {
         System.out.println(y);
         System.out.println("------------------");
 
+
+        //slow mode
+        if(L1 == true){
+           x /= 3;
+           y /= 3;
+        }
+
+        //wheel
         if(x == 0)
         {
             motor0.setPower(y);
@@ -45,5 +56,6 @@ public class Main extends OpMode {
             motor0.setPower(y + (x * (-1)));
             motor1.setPower((y - (x * (-1))) * -1);
         }
+
     }
 }
