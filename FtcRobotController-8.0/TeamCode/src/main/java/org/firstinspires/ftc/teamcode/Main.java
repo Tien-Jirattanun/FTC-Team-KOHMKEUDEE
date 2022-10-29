@@ -30,6 +30,8 @@ public class Main extends OpMode {
         System.out.println(y);
         System.out.println("------------------");
 
+        System.out.println("branch --");
+
         if(x == 0)
         {
             motor0.setPower(y);
