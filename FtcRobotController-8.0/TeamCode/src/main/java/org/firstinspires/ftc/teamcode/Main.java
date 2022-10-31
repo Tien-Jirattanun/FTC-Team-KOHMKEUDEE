@@ -7,53 +7,89 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @Autonomous(name = "control")
 public class Main extends OpMode {
 
-    DcMotor motor0;                     //RIGHT motor
-    DcMotor motor1;                     //LEFT motor
+    private DcMotor motor0;                     //Top Left
+    private DcMotor motor1;                     //Top Right
+    private DcMotor motor2;                     //Bottom Left
+    private DcMotor motor3;                     //Bottom Right
 
     @Override
-    public void init() {
+    public void init()
+    {
         motor0 = hardwareMap.get(DcMotor.class ,"motor0");
         motor1 = hardwareMap.get(DcMotor.class ,"motor1");
+        motor2 = hardwareMap.get(DcMotor.class ,"motor2");
+        motor3 = hardwareMap.get(DcMotor.class ,"motor3");
     }
 
     @Override
-    public void loop() {
+    public void loop()
+    {
 
-        //check x,y
-        float x = gamepad1.left_stick_x;
-        float y = gamepad1.left_stick_y;
-
-        //button
-        boolean L1 = gamepad1.left_bumper;
-
-        //log
-        System.out.print("x axis : ");
-        System.out.println(x);
-        System.out.print("y axis : ");
-        System.out.println(y);
-        System.out.println("------------------");
-
-        //slow mode
-        if(L1 == true){
-           x /= 3;
-           y /= 3;
-        }
-
-        //wheel
-        if(x == 0)
+        if(gamepad1.dpad_up)
         {
-            motor0.setPower(y);
-            motor1.setPower(y * -1);
+            motor0.setPower(1);
+            motor1.setPower(1);
+            motor2.setPower(1);
+            motor3.setPower(1);
         }
-        else if(x > 0)
+        else if(gamepad1.dpad_down)
         {
-            motor0.setPower(y - x);
-            motor1.setPower((y + x) * -1);
+            motor0.setPower(-1);
+            motor1.setPower(-1);
+            motor2.setPower(-1);
+            motor3.setPower(-1);
         }
-        else if(x < 0)
+        else if (gamepad1.dpad_right)
         {
-            motor0.setPower(y + (x * (-1)));
-            motor1.setPower((y - (x * (-1))) * -1);
+            motor0.setPower(1);
+            motor1.setPower(-1);
+            motor2.setPower(-1);
+            motor3.setPower(1);
+        }
+        else if (gamepad1.dpad_left)
+        {
+            motor0.setPower(-1);
+            motor1.setPower(1);
+            motor2.setPower(1);
+            motor3.setPower(-1);
+        }
+        else if(gamepad1.dpad_up && gamepad1.dpad_right)
+        {
+            motor0.setPower(1);
+            motor1.setPower(0);
+            motor2.setPower(0);
+            motor3.setPower(1);
+        }
+        else if(gamepad1.dpad_up && gamepad1.dpad_left)
+        {
+            motor0.setPower(0);
+            motor1.setPower(1);
+            motor2.setPower(1);
+            motor3.setPower(0);
+        }
+        else if(gamepad1.dpad_down && gamepad1.dpad_right){
+            motor0.setPower(0);
+            motor1.setPower(-1);
+            motor2.setPower(-1);
+            motor3.setPower(0);
+        }
+        else if(gamepad1.dpad_down && gamepad1.dpad_left){
+            motor0.setPower(-1);
+            motor1.setPower(0);
+            motor2.setPower(0);
+            motor3.setPower(-1);
+        }
+        else if(gamepad1.right_bumper){
+            motor0.setPower(1);
+            motor1.setPower(-1);
+            motor2.setPower(1);
+            motor3.setPower(-1);
+        }
+        else if(gamepad1.left_bumper){
+            motor0.setPower(-1);
+            motor1.setPower(1);
+            motor2.setPower(-1);
+            motor3.setPower(1);
         }
     }
 }
