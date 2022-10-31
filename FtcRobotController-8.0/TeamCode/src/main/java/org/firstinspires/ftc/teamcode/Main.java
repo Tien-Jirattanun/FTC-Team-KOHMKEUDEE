@@ -33,7 +33,6 @@ public class Main extends OpMode {
         System.out.println(y);
         System.out.println("------------------");
 
-
         //slow mode
         if(L1 == true){
            x /= 3;
@@ -56,6 +55,5 @@ public class Main extends OpMode {
             motor0.setPower(y + (x * (-1)));
             motor1.setPower((y - (x * (-1))) * -1);
         }
-
     }
 }
