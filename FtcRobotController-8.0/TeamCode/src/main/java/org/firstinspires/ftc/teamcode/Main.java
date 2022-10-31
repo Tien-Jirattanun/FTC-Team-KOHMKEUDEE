@@ -3,17 +3,21 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 @Autonomous(name = "control")
 public class Main extends OpMode {
 
     DcMotor motor0;                     //RIGHT motor
     DcMotor motor1;                     //LEFT motor
+    DigitalChannel digitalTouch;
 
     @Override
     public void init() {
         motor0 = hardwareMap.get(DcMotor.class ,"motor0");
         motor1 = hardwareMap.get(DcMotor.class ,"motor1");
+        digitalTouch = hardwareMap.get(DigitalChannel.class, "switch1");
+        digitalTouch.setMode(DigitalChannel.Mode.INPUT);
     }
 
     @Override
@@ -55,6 +59,11 @@ public class Main extends OpMode {
         {
             motor0.setPower(y + (x * (-1)));
             motor1.setPower((y - (x * (-1))) * -1);
+        }
+
+        if(digitalTouch.getState() == true){
+            motor0.setPower(0);
+            motor1.setPower(0);
         }
 
     }
