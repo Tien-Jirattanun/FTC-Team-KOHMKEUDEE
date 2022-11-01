@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "control")
@@ -11,8 +12,13 @@ public class Main extends LinearOpMode {
 
     DcMotor motor0;                     //RIGHT motor
     DcMotor motor1;                     //LEFT motor
-    Servo servo0;                       //Base right arm
+    DcMotor motor2;                     //Base arm Left
+    DcMotor motor3;                     //Base arm Right
+    Servo servo0;                       //Mid Right arm
     Servo servo1;                       //High Right arm
+    Servo servo2;                       //Mid Left arm
+    Servo servo3;                       //High Left arm
+
 
     @Override
     public void runOpMode()
@@ -22,13 +28,30 @@ public class Main extends LinearOpMode {
         byte servoData0 = 0;
         byte servoData1 = 0;
 
+        //motor define
         motor0 = hardwareMap.get(DcMotor.class ,"motor0");
         motor1 = hardwareMap.get(DcMotor.class ,"motor1");
+        motor2 = hardwareMap.get(DcMotor.class ,"motor2");
+        motor3 = hardwareMap.get(DcMotor.class ,"motor3");
+
+        //servo define
         servo0 = hardwareMap.get(Servo.class, "servo0");
         servo1 = hardwareMap.get(Servo.class, "servo1");
+        servo2 = hardwareMap.get(Servo.class, "servo2");
+        servo3 = hardwareMap.get(Servo.class, "servo3");
+
+        //Mode setting
+            //Wheel setting
+        motor0.setDirection(DcMotor.Direction.FORWARD);
+        motor1.setDirection(DcMotor.Direction.REVERSE);
+            //Arm setting
+        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-
 
 
         waitForStart();
@@ -73,7 +96,8 @@ public class Main extends LinearOpMode {
             }
 
             //-------------------------Arm-------------------------
-            //Auto arm
+
+            //Auto arm (NEED CALIBRATION BEFORE USE)
             if(gamepad1.cross)
             {
                 //reset to the start position
