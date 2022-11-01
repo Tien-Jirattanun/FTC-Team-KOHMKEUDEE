@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "control")
@@ -27,6 +25,10 @@ public class Main extends LinearOpMode {
         //equal to the starter value of the servo
         byte servoData0 = 0;
         byte servoData1 = 0;
+        byte servoData2 = 0;
+        byte servoData3 = 0;
+        int encoder2 = 0;
+        int encoder3 = 0;
 
         //motor define
         motor0 = hardwareMap.get(DcMotor.class ,"motor0");
@@ -49,7 +51,7 @@ public class Main extends LinearOpMode {
         motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -103,40 +105,74 @@ public class Main extends LinearOpMode {
                 //reset to the start position
                 servoData0 = 0;
                 servoData1 = 0;
-                servo0.setPosition(0);
-                servo1.setPosition(0);
+                servoData2 = 0;
+                servoData3 = 0;
+                encoder2 = 0;
+                encoder3 = 0;
+                servo0.setPosition(servoData0);
+                servo1.setPosition(servoData1);
+                servo2.setPosition(servoData2);
+                servo3.setPosition(servoData3);
+                motor2.setTargetPosition(encoder2);
+                motor3.setTargetPosition(encoder3);
+
             }
             else if(gamepad1.circle)
             {
                 //Low junction
                 servoData0 = 0;
                 servoData1 = 0;
-                servo0.setPosition(0);
-                servo1.setPosition(0);
+                servoData2 = 0;
+                servoData3 = 0;
+                encoder2 = 0;
+                encoder3 = 0;
+                servo0.setPosition(servoData0);
+                servo1.setPosition(servoData1);
+                servo2.setPosition(servoData2);
+                servo3.setPosition(servoData3);
+                motor2.setTargetPosition(encoder2);
+                motor3.setTargetPosition(encoder3);
             }
             else if(gamepad1.square)
             {
                 //Medium junction
                 servoData0 = 0;
                 servoData1 = 0;
-                servo0.setPosition(0);
-                servo1.setPosition(0);
+                servoData2 = 0;
+                servoData3 = 0;
+                encoder2 = 0;
+                encoder3 = 0;
+                servo0.setPosition(servoData0);
+                servo1.setPosition(servoData1);
+                servo2.setPosition(servoData2);
+                servo3.setPosition(servoData3);
+                motor2.setTargetPosition(encoder2);
+                motor3.setTargetPosition(encoder3);
             }
             else if(gamepad1.triangle)
             {
                 //High junction
                 servoData0 = 0;
                 servoData1 = 0;
-                servo0.setPosition(0);
-                servo1.setPosition(0);
+                servoData2 = 0;
+                servoData3 = 0;
+                encoder2 = 0;
+                encoder3 = 0;
+                servo0.setPosition(servoData0);
+                servo1.setPosition(servoData1);
+                servo2.setPosition(servoData2);
+                servo3.setPosition(servoData3);
+                motor2.setTargetPosition(encoder2);
+                motor3.setTargetPosition(encoder3);
             }
 
             //Manual arm
+            //Not finish because not CALIBRATE the encoder motor yet
+
+            /*
+            
             if(gamepad1.right_stick_y > 0){
-                servoData0 += 0.1;
-                servoData1 += 0.1;
-                servo0.setPosition(servoData0);
-                servo1.setPosition(servoData1);
+
             }
             else if(gamepad1.right_stick_y < 0){
                 servoData0 -= 0.1;
@@ -144,6 +180,8 @@ public class Main extends LinearOpMode {
                 servo0.setPosition(servoData0);
                 servo1.setPosition(servoData1);
             }
+
+            */
 
 
             telemetry.addData("Servo Position", servo0.getPosition());
