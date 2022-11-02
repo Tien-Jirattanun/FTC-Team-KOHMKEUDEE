@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "control")
 public class Main extends LinearOpMode {
@@ -12,6 +13,7 @@ public class Main extends LinearOpMode {
     Servo servo1;                       //High Right arm
     Servo servo2;                       //Mid Left arm
     Servo servo3;                       //High Left arm
+    private ElapsedTime runtime = new ElapsedTime();
 
 
     @Override
@@ -28,8 +30,6 @@ public class Main extends LinearOpMode {
         //servo define
         servo0 = hardwareMap.get(Servo.class, "servo0");
         servo1 = hardwareMap.get(Servo.class, "servo1");
-        servo2 = hardwareMap.get(Servo.class, "servo2");
-        servo3 = hardwareMap.get(Servo.class, "servo3");
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -37,18 +37,20 @@ public class Main extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive()) {
+        while(true) {
+            runtime.reset();
+            while (opModeIsActive() && (runtime.seconds() <= 3.0)) {
+                servo1.setPosition(0);
+                telemetry.addData("Leg 1", runtime.seconds());
+                telemetry.update();
+            }
 
-            servo0.setPosition(0);
-            servo1.setPosition(0);
-            servo0.setPosition(0);
-            servo1.setPosition(0);
-
-            telemetry.addData("Servo Position", servo0.getPosition());
-            telemetry.addData("Servo Position", servo1.getPosition());
-            telemetry.addData("Status", "Running");
-            telemetry.update();
-
+            runtime.reset();
+            while (opModeIsActive() && (runtime.seconds() <= 3.0)) {
+                servo1.setPosition(1);
+                telemetry.addData("Leg 2", runtime.seconds());
+                telemetry.update();
+            }
         }
 
 
