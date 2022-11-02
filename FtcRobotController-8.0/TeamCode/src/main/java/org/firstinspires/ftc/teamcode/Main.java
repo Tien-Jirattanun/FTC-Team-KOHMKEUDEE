@@ -36,7 +36,7 @@ public class Main extends LinearOpMode {
 
 
         waitForStart();
-
+        
         while(true) {
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() <= 3.0)) {
@@ -52,9 +52,6 @@ public class Main extends LinearOpMode {
                 telemetry.update();
             }
         }
-
-
-
     }
 
 }
