@@ -36,6 +36,12 @@ public class Main extends LinearOpMode {
         motor2 = hardwareMap.get(DcMotor.class ,"motor2");
         motor3 = hardwareMap.get(DcMotor.class ,"motor3");
 
+        servo0 = hardwareMap.get(Servo.class ,"servo0");
+        servo1 = hardwareMap.get(Servo.class ,"servo1");
+        servo4 = hardwareMap.get(Servo.class ,"servo4");
+        servo5 = hardwareMap.get(Servo.class ,"servo5");
+
+
         //Mode setting
         //Wheel setting
         motor0.setDirection(DcMotor.Direction.FORWARD);
@@ -90,64 +96,6 @@ public class Main extends LinearOpMode {
                 motor0.setPower(yL + (xL * (-1)));
                 motor1.setPower((yL - (xL * (-1))) * -1);
             }
-
-            //-------------------------Arm-------------------------
-
-            //Auto arm (NEED CALIBRATION BEFORE USE)
-//            if(gamepad1.cross)
-//            {
-//                //reset to the start position
-//                servoData0 = 0;
-//                servoData1 = 0;
-//                servoData2 = 0;
-//                servoData3 = 0;
-//                encoder2 = 0;
-//                encoder3 = 0;
-//                servo0.setPosition(servoData0);
-//                servo1.setPosition(servoData1);
-//                servo2.setPosition(servoData2);
-//                servo3.setPosition(servoData3);
-//                motor2.setTargetPosition(encoder2);
-//                motor3.setTargetPosition(encoder3);
-//
-//            }
-//
-//            else if(gamepad1.circle)
-//            {
-//                //reset to the start position
-//                servoData0 = 0;
-//                servoData1 = 0;
-//                servoData2 = 0;
-//                servoData3 = 0;
-//                encoder2 = 0;
-//                encoder3 = 0;
-//                servo0.setPosition(servoData0);
-//                servo1.setPosition(servoData1);
-//                servo2.setPosition(servoData2);
-//                servo3.setPosition(servoData3);
-//                motor2.setTargetPosition(encoder2);
-//                motor3.setTargetPosition(encoder3);
-//            }
-
-
-
-            //Manual arm
-            //Not finish because not CALIBRATE the encoder motor yet
-
-            /*
-
-            if(gamepad1.right_stick_y > 0){
-
-            }
-            else if(gamepad1.right_stick_y < 0){
-                servoData0 -= 0.1;
-                servoData1 -= 0.1;
-                servo0.setPosition(servoData0);
-                servo1.setPosition(servoData1);
-            }
-
-            */
-
 
             telemetry.addData("Servo0 Position", servo0.getPosition());
             telemetry.addData("Servo1 Position", servo1.getPosition());
