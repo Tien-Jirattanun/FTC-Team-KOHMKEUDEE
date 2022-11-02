@@ -11,8 +11,8 @@ public class Main extends LinearOpMode {
 
     Servo servo0;                       //Mid Right arm
     Servo servo1;                       //High Right arm
-    Servo servo2;                       //Mid Left arm
-    Servo servo3;                       //High Left arm
+    Servo servo4;                       //Mid Left arm
+    Servo servo5;                       //High Left arm
     private ElapsedTime runtime = new ElapsedTime();
 
 
@@ -30,6 +30,8 @@ public class Main extends LinearOpMode {
         //servo define
         servo0 = hardwareMap.get(Servo.class, "servo0");
         servo1 = hardwareMap.get(Servo.class, "servo1");
+        servo4 = hardwareMap.get(Servo.class, "servo4");
+        servo5 = hardwareMap.get(Servo.class, "servo5");
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -41,6 +43,9 @@ public class Main extends LinearOpMode {
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() <= 3.0)) {
                 servo1.setPosition(0);
+                servo0.setPosition(0);
+                servo4.setPosition(0);
+                servo5.setPosition(0);
                 telemetry.addData("Leg 1", runtime.seconds());
                 telemetry.update();
             }
@@ -48,6 +53,9 @@ public class Main extends LinearOpMode {
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() <= 3.0)) {
                 servo1.setPosition(1);
+                servo0.setPosition(1);
+                servo4.setPosition(1);
+                servo5.setPosition(1);
                 telemetry.addData("Leg 2", runtime.seconds());
                 telemetry.update();
             }
