@@ -42,9 +42,9 @@ public class Main extends LinearOpMode {
         while(true) {
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() <= 3.0)) {
-                servo1.setPosition(0);
+                servo1.setPosition(1);
                 servo0.setPosition(0);
-                servo4.setPosition(0);
+                servo4.setPosition(1);
                 servo5.setPosition(0);
                 telemetry.addData("Leg 1", runtime.seconds());
                 telemetry.update();
@@ -52,9 +52,9 @@ public class Main extends LinearOpMode {
 
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() <= 3.0)) {
-                servo1.setPosition(1);
+                servo1.setPosition(0);
                 servo0.setPosition(1);
-                servo4.setPosition(1);
+                servo4.setPosition(0);
                 servo5.setPosition(1);
                 telemetry.addData("Leg 2", runtime.seconds());
                 telemetry.update();
