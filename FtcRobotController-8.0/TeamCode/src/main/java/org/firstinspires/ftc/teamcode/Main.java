@@ -48,10 +48,10 @@ public class Main extends LinearOpMode {
         motor0.setDirection(DcMotor.Direction.FORWARD);
         motor1.setDirection(DcMotor.Direction.REVERSE);
         //Arm setting
-        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
