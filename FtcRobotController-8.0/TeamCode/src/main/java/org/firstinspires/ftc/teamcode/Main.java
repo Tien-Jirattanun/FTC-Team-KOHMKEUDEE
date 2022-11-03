@@ -97,12 +97,12 @@ public class Main extends LinearOpMode {
                 motor1.setPower((yL - (xL * (-1))) * -1);
             }
 
-            telemetry.addData("Servo0 Position", servo0.getPosition());
-            telemetry.addData("Servo1 Position", servo1.getPosition());
-            telemetry.addData("Servo4 Position", servo4.getPosition());
-            telemetry.addData("Servo5 Position", servo5.getPosition());
-            telemetry.addData("Motor2 Position", motor2.getCurrentPosition());
-            telemetry.addData("Motor3 Position", motor3.getCurrentPosition());
+            telemetry.addData("Servo0 Position", servo0.getPosition());             //low right
+            telemetry.addData("Servo1 Position", servo1.getPosition());             //high right
+            telemetry.addData("Servo4 Position", servo4.getPosition());             //low left
+            telemetry.addData("Servo5 Position", servo5.getPosition());             //high left
+            telemetry.addData("Motor2 Position", motor2.getCurrentPosition());      //base right
+            telemetry.addData("Motor3 Position", motor3.getCurrentPosition());      //base left
             telemetry.addData("Status", "Running");
             telemetry.update();
 
