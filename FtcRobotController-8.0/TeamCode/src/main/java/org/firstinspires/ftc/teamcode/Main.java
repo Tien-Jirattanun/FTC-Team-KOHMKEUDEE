@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "control")
@@ -33,8 +34,8 @@ public class Main extends LinearOpMode {
         //motor define
         motor0 = hardwareMap.get(DcMotor.class ,"motor0");
         motor1 = hardwareMap.get(DcMotor.class ,"motor1");
-        motor2 = hardwareMap.get(DcMotor.class ,"motor2");
-        motor3 = hardwareMap.get(DcMotor.class ,"motor3");
+        motor2 = hardwareMap.get(DcMotorEx.class ,"motor2");
+        motor3 = hardwareMap.get(DcMotorEx.class ,"motor3");
 
         servo0 = hardwareMap.get(Servo.class ,"servo0");
         servo1 = hardwareMap.get(Servo.class ,"servo1");
@@ -48,9 +49,9 @@ public class Main extends LinearOpMode {
         motor1.setDirection(DcMotor.Direction.REVERSE);
         //Arm setting
         motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
