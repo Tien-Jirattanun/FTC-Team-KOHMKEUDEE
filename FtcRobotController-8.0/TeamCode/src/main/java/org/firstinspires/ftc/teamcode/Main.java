@@ -1,3 +1,4 @@
+
 //for motor code
 
 package org.firstinspires.ftc.teamcode;
@@ -27,6 +28,38 @@ public class Main extends LinearOpMode {
         motor2.setTargetPosition(0);
         motor3.setTargetPosition(0);
 
+        motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        motor2.setVelocity(500);
+        motor3.setVelocity(500);
+
+        motor2.setTargetPosition(1440);
+        motor3.setTargetPosition(1440);
+        while(motor2.isBusy() && motor3.isBusy()) {
+            // Let the drive team see that we're waiting on the motor
+            telemetry.addData("Status", "Waiting for the motor to reach its target");
+            telemetry.update();
+        }
+
+        motor2.setTargetPosition(0);
+        motor3.setTargetPosition(0);
+        while(motor2.isBusy() && motor3.isBusy()) {
+            // Let the drive team see that we're waiting on the motor
+            telemetry.addData("Status", "Waiting for the motor to reach its target");
+            telemetry.update();
+        }
+
+        motor2.setTargetPosition(1440);
+        motor3.setTargetPosition(1440);
+        while(motor2.isBusy() && motor3.isBusy()) {
+            // Let the drive team see that we're waiting on the motor
+            telemetry.addData("Status", "Waiting for the motor to reach its target");
+            telemetry.update();
+        }
+
+
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -34,9 +67,6 @@ public class Main extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()){
-
-
-
             telemetry.addData("Status", "Running");
             telemetry.update();
         }
