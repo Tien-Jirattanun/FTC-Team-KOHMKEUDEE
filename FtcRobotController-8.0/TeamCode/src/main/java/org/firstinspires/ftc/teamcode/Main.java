@@ -1,55 +1,66 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "control")
-public class Main extends OpMode {
+@TeleOp
+public class Main extends LinearOpMode {
 
-    DcMotor motor0;                     //RIGHT motor
-    DcMotor motor1;                     //LEFT motor
+    Servo servo0;
+    Servo servo1;
 
-    @Override
-    public void init() {
-        motor0 = hardwareMap.get(DcMotor.class ,"motor0");
-        motor1 = hardwareMap.get(DcMotor.class ,"motor1");
-    }
+    double servoPositionMid = 1.0;
+    double servoPositionHigh = 1-servoPositionMid;
 
     @Override
-    public void loop() {
-        twoWheel();
-    }
+    public void runOpMode(){
+        servo0 = hardwareMap.get(Servo.class, "servo0");
+        servo1 = hardwareMap.get(Servo.class, "servo1");
 
-    private void twoWheel(){
-        //check x,y
-        float x = gamepad1.left_stick_x;
-        float y = gamepad1.left_stick_y;
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
 
-        //button
-        boolean L1 = gamepad1.left_bumper;
+        servo0.setPosition(servoPositionMid);
 
-        //slow mode
-        if(L1 == true){
-            x /= 3;
-            y /= 3;
+        waitForStart();
+
+        while(opModeIsActive()){
+
+            if(gamepad1.dpad_down){
+                if (servoPositionMid < 1 ){
+                    servoPositionMid = servoPositionMid + 0.01;
+                }
+
+                if(servoPositionHigh > 0){
+                    servoPositionHigh = servoPositionHigh - 0.012;
+                }
+
+                sleep(50);
+
+            }
+            else if(gamepad1.dpad_up){
+                if (servoPositionMid > 0){
+                    servoPositionMid = servoPositionMid - 0.01;
+                }
+                if (servoPositionHigh < 1){
+                    servoPositionHigh = servoPositionHigh + 0.012;
+                }
+
+                sleep(50);
+            }
+
+            servo0.setPosition(servoPositionMid);
+            servo1.setPosition(servoPositionHigh);
+
+            telemetry.addData("servo0: ", servo0.getPosition());
+            telemetry.addData("servo0 num : ", servoPositionMid);
+            telemetry.addData("servo0: ", servo1.getPosition());
+            telemetry.addData("servo0 num : ", servoPositionHigh);
+            telemetry.addData("Status", "Running");
+            telemetry.update();
         }
 
-        //wheel
-        if(x == 0)
-        {
-            motor0.setPower(y);
-            motor1.setPower(y * -1);
-        }
-        else if(x > 0)
-        {
-            motor0.setPower(y - x);
-            motor1.setPower((y + x) * -1);
-        }
-        else if(x < 0)
-        {
-            motor0.setPower(y + (x * (-1)));
-            motor1.setPower((y - (x * (-1))) * -1);
-        }
+
     }
 }
