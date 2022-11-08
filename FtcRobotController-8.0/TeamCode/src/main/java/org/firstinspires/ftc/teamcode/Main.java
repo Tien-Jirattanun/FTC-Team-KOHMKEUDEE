@@ -18,7 +18,10 @@ public class Main extends OpMode {
 
     @Override
     public void loop() {
+        twoWheel();
+    }
 
+    private void twoWheel(){
         //check x,y
         float x = gamepad1.left_stick_x;
         float y = gamepad1.left_stick_y;
@@ -26,18 +29,10 @@ public class Main extends OpMode {
         //button
         boolean L1 = gamepad1.left_bumper;
 
-        //log
-        System.out.print("x axis : ");
-        System.out.println(x);
-        System.out.print("y axis : ");
-        System.out.println(y);
-        System.out.println("------------------");
-
-
         //slow mode
         if(L1 == true){
-           x /= 3;
-           y /= 3;
+            x /= 3;
+            y /= 3;
         }
 
         //wheel
@@ -56,6 +51,5 @@ public class Main extends OpMode {
             motor0.setPower(y + (x * (-1)));
             motor1.setPower((y - (x * (-1))) * -1);
         }
-
     }
 }
