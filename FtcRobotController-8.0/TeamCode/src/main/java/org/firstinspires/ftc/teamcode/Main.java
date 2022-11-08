@@ -40,11 +40,12 @@ public class Main extends LinearOpMode {
 
             }
             else if(gamepad1.dpad_up){
-                if (servoPositionMid > 0){
-                    servoPositionMid = servoPositionMid - 0.01;
+                if (servoPositionMid > 0 && servoPositionHigh < 0.2 && servoPositionMid > 0){
+                    servoPositionHigh = servoPositionHigh + 0.01;
                 }
-                if (servoPositionHigh < 1){
-                    servoPositionHigh = servoPositionHigh + 0.012;
+                if (servoPositionHigh < 1 && servoPositionHigh >= 0.2 && servoPositionMid > 0){
+                    servoPositionHigh = servoPositionHigh + 0.01;
+                    servoPositionMid = servoPositionMid - 0.01;
                 }
 
                 sleep(50);
