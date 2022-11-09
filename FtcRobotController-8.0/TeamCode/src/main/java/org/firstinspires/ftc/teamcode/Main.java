@@ -1,67 +1,62 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class Main extends LinearOpMode {
 
-    Servo servo0;
-    Servo servo1;
+    DcMotorEx motor2;
 
-    double servoPositionMid = 1.0;
-    double servoPositionHigh = 1-servoPositionMid;
+    int targetMotorPosition = 0;
 
     @Override
     public void runOpMode(){
-        servo0 = hardwareMap.get(Servo.class, "servo0");
-        servo1 = hardwareMap.get(Servo.class, "servo1");
+        motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
+
+        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        servo0.setPosition(servoPositionMid);
+        motor2.setTargetPosition(targetMotorPosition);
+
 
         waitForStart();
 
         while(opModeIsActive()){
 
-            if(gamepad1.dpad_down){
-                if (servoPositionMid < 1 ){
-                    servoPositionMid = servoPositionMid + 0.01;
-                }
 
-                if(servoPositionHigh > 0){
-                    servoPositionHigh = servoPositionHigh - 0.012;
-                }
+            motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor2.setVelocity(200);
 
-                sleep(50);
 
+            if(gamepad1.dpad_down && motor2.getCurrentPosition() < 1440){
+                targetMotorPosition += 108;
             }
-            else if(gamepad1.dpad_up){
-                if (servoPositionMid > 0 && servoPositionHigh < 0.2 && servoPositionMid > 0){
-                    servoPositionHigh = servoPositionHigh + 0.01;
-                }
-                if (servoPositionHigh < 1 && servoPositionHigh >= 0.2 && servoPositionMid > 0){
-                    servoPositionHigh = servoPositionHigh + 0.01;
-                    servoPositionMid = servoPositionMid - 0.01;
-                }
-
-                sleep(50);
+            else if(gamepad1.dpad_up && motor2.getCurrentPosition() > -1440){
+                targetMotorPosition -= 108;
             }
 
-            servo0.setPosition(servoPositionMid);
-            servo1.setPosition(servoPositionHigh);
+            sleep(50);
+            motor2.setTargetPosition(targetMotorPosition);
+            armBreak();
 
-            telemetry.addData("servo0: ", servo0.getPosition());
-            telemetry.addData("servo0 num : ", servoPositionMid);
-            telemetry.addData("servo0: ", servo1.getPosition());
-            telemetry.addData("servo0 num : ", servoPositionHigh);
+            telemetry.addData("Encoder value", motor2.getCurrentPosition());
             telemetry.addData("Status", "Running");
             telemetry.update();
         }
 
 
+    }
+
+    private void armBreak(){
+        while(motor2.isBusy()) {
+            telemetry.addData("Status", "Waiting for the motor to reach its target");
+            telemetry.update();
+        }
     }
 }
