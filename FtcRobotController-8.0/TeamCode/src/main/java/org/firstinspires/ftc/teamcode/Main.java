@@ -12,7 +12,8 @@ public class Main extends LinearOpMode {
     DcMotorEx motor2;
     DcMotorEx motor3;
 
-    int targetMotorPosition = 0;
+    int targetMotorPosition2 = 0;
+    int targetMotorPosition3 = 0;
 
     @Override
     public void runOpMode(){
@@ -20,12 +21,13 @@ public class Main extends LinearOpMode {
         motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
 
         motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        motor2.setTargetPosition(targetMotorPosition);
-
+        motor2.setTargetPosition(targetMotorPosition2);
+        motor3.setTargetPosition(targetMotorPosition3);
 
         waitForStart();
 
@@ -33,31 +35,39 @@ public class Main extends LinearOpMode {
 
 
             motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motor2.setVelocity(200);
+            motor2.setVelocity(500);
+            motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor3.setVelocity(500);
 
 
-            if(gamepad1.dpad_down && motor2.getCurrentPosition() < 1440){
-                targetMotorPosition += 108;
+            if(gamepad1.dpad_down && motor2.getCurrentPosition() < 0 && motor3.getCurrentPosition() > 0){
+                targetMotorPosition2 += 108;
+                targetMotorPosition3 -= 108;
             }
-            else if(gamepad1.dpad_up && motor2.getCurrentPosition() > -1440){
-                targetMotorPosition -= 108;
+            else if(gamepad1.dpad_up && motor2.getCurrentPosition() > -1440 && motor3.getCurrentPosition() < 1440){
+                targetMotorPosition2 -= 108;
+                targetMotorPosition3 += 108;
             }
 
-            motor2.setTargetPosition(targetMotorPosition);
-            armBreak();
+            if(targetMotorPosition2 < 10 && targetMotorPosition3 > -10){
+                targetMotorPosition2 = 0;
+                targetMotorPosition3 = 0;
+            }
+
+            motor2.setTargetPosition(targetMotorPosition2);
+            motor3.setTargetPosition(targetMotorPosition3);
+            while (motor2.isBusy() && motor3.isBusy()){
+                telemetry.addData("Encoder value", motor2.getCurrentPosition());
+                telemetry.addData("Encoder value", motor3.getCurrentPosition());
+                telemetry.addData("Status", "Wait motor");
+            }
 
             telemetry.addData("Encoder value", motor2.getCurrentPosition());
+            telemetry.addData("Encoder value", motor3.getCurrentPosition());
             telemetry.addData("Status", "Running");
             telemetry.update();
         }
 
 
-    }
-
-    private void armBreak(){
-        while(motor2.isBusy()) {
-            telemetry.addData("Status", "Waiting for the motor to reach its target");
-            telemetry.update();
-        }
     }
 }
