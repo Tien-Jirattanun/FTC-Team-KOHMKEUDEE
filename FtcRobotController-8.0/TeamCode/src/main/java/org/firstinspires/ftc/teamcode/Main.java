@@ -10,12 +10,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Main extends LinearOpMode {
 
     DcMotorEx motor2;
+    DcMotorEx motor3;
 
     int targetMotorPosition = 0;
 
     @Override
     public void runOpMode(){
         motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
+        motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
 
         motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -41,7 +43,6 @@ public class Main extends LinearOpMode {
                 targetMotorPosition -= 108;
             }
 
-            sleep(50);
             motor2.setTargetPosition(targetMotorPosition);
             armBreak();
 
