@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "control")
-public class Main extends LinearOpMode {
+@TeleOp(name = "control")
+public class Motor extends LinearOpMode {
 
     DcMotor motor0;                     //RIGHT motor
     DcMotor motor1;                     //LEFT motor
@@ -29,18 +29,25 @@ public class Main extends LinearOpMode {
 
             if (pad_up) {
                 motor0.setPower(1);
-                motor1.setPower(1);
-            } else if (pad_right) {
-                motor0.setPower(1);
                 motor1.setPower(-1);
+                motor2.setPower(0);
+            } else if (pad_right) {
+                motor0.setPower(-0.545);
+                motor1.setPower(-0.545);
                 motor2.setPower(1);
             } else if (pad_left) {
-                motor0.setPower(-1);
-                motor1.setPower(1);
+                motor0.setPower(0.545);
+                motor1.setPower(0.545);
                 motor2.setPower(-1);
             } else if (pad_down) {
                 motor0.setPower(-1);
-                motor1.setPower(-1);
+                motor1.setPower(1);
+                motor2.setPower(0);
+            }
+            else{
+                motor0.setPower(0);
+                motor1.setPower(0);
+                motor2.setPower(0);
             }
         }
     }
