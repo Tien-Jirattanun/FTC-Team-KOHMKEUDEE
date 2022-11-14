@@ -14,9 +14,12 @@ public class Main extends LinearOpMode {
 
     @Override
     public void runOpMode(){
-
+        motor0 = hardwareMap.get(DcMotor.class ,"motor0");
+        motor1 = hardwareMap.get(DcMotor.class ,"motor1");
+        motor2 = hardwareMap.get(DcMotor.class ,"motor2");
     
         waitForStart();
 
+        
     }
 }
