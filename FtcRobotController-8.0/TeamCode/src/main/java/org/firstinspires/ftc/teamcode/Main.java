@@ -20,6 +20,10 @@ public class Main extends LinearOpMode {
     
         waitForStart();
 
-        
+        while(opModeIsActive()){
+            if (gamepad1.dpad_up){
+                
+            }
+        }
     }
 }
