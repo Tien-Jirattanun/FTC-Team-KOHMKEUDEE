@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import static java.lang.Math.sqrt;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name = "control")
-public class Motor extends LinearOpMode {
+@TeleOp(name = "Controll")
+public class Controll extends LinearOpMode {
 
     DcMotor motor0;                     //RIGHT motor
     DcMotor motor1;                     //LEFT motor
@@ -26,29 +28,17 @@ public class Motor extends LinearOpMode {
             boolean pad_right = gamepad1.dpad_right;
             boolean pad_left = gamepad1.dpad_left;
             boolean pad_down = gamepad1.dpad_down;
+            double R = 0.155;
+            float X = gamepad1.left_stick_x;
+            float Y = gamepad1.left_stick_y;
+            double W1 = -0.5*X - (sqrt(3)/2)*Y;
+            double W2 = -0.5*X + (sqrt(3)/2)*Y  ;
+            double W3 = X ;
 
-            if (pad_up) {
-                motor0.setPower(1);
-                motor1.setPower(-1);
-                motor2.setPower(0);
-            } else if (pad_right) {
-                motor0.setPower(-0.545);
-                motor1.setPower(-0.545);
-                motor2.setPower(1);
-            } else if (pad_left) {
-                motor0.setPower(0.545);
-                motor1.setPower(0.545);
-                motor2.setPower(-1);
-            } else if (pad_down) {
-                motor0.setPower(-1);
-                motor1.setPower(1);
-                motor2.setPower(0);
-            }
-            else{
-                motor0.setPower(0);
-                motor1.setPower(0);
-                motor2.setPower(0);
-            }
+            motor0.setPower(W2);
+            motor1.setPower(W1);
+            motor2.setPower(W3*0.9);
+
         }
     }
 
@@ -88,6 +78,29 @@ public class Motor extends LinearOpMode {
 //        }
 //    }
 //}
+
+//if (pad_up) {
+//        motor0.setPower(1);
+//        motor1.setPower(-1);
+//        motor2.setPower(0);
+//        } else if (pad_right) {
+//        motor0.setPower(-0.545);
+//        motor1.setPower(-0.545);
+//        motor2.setPower(1);
+//        } else if (pad_left) {
+//        motor0.setPower(0.545);
+//        motor1.setPower(0.545);
+//        motor2.setPower(-1);
+//        } else if (pad_down) {
+//        motor0.setPower(-1);
+//        motor1.setPower(1);
+//        motor2.setPower(0);
+//        }
+//        else{
+//        motor0.setPower(0);
+//        motor1.setPower(0);
+//        motor2.setPower(0);
+//        }
 
 
 
