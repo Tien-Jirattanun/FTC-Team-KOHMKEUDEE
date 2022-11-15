@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name = "Controll")
-public class Controll extends LinearOpMode {
+public class Main extends LinearOpMode {
 
     DcMotor motor0;                     //RIGHT motor
     DcMotor motor1;                     //LEFT motor
@@ -38,6 +38,11 @@ public class Controll extends LinearOpMode {
             motor0.setPower(W2);
             motor1.setPower(W1);
             motor2.setPower(W3*0.9);
+            if (gamepad1.cross) {
+                motor0.setTargetPosition(0);
+                motor1.setTargetPosition(0);
+                motor2.setTargetPosition(0);
+            }
 
         }
     }
