@@ -49,8 +49,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
-@Disabled
+@TeleOp(name = "Camera", group = "Concept")
 public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
 
     /*
@@ -70,31 +69,9 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
             "3 Panel"
     };
 
-    /*
-     * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
-     * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
-     * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
-     * web site at https://developer.vuforia.com/license-manager.
-     *
-     * Vuforia license keys are always 380 characters long, and look as if they contain mostly
-     * random data. As an example, here is a example of a fragment of a valid key:
-     *      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...
-     * Once you've obtained a license key, copy the string from the Vuforia web site
-     * and paste it in to your code on the next line, between the double quotes.
-     */
-    private static final String VUFORIA_KEY =
-            " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+    private static final String VUFORIA_KEY = "AVwIzU7/////AAABmVJe0BAh1U2Fsx5Gr9A3Qc6EzmN87zcYZdZIsxEP9MFDR9x6oROpgtrIWIyGxbpT/c+cmLbIPKdn0EbqO94Zp61opNzOMAIN6U0wzxIAmNBU20sGiKBIPt+QeusD4xUgCxmIVqR0ai7E5WUlQ5D6mnbq8l3+paiYE8HbELj+21NQqgUaUDaly1vPSdcqYi0yD6c6QPpBhEVw7Vy/MJwq5xZ1aL4nksdTE1Su8Vtjmgezq+QfrPqKYiLnkyaS+AgMrb4kK08CZFJih70Htz1CYb3GtT6Es5k3O5RV9imFxhCXBhSD22k3i2CqQxYSZamaxB+yFph9SLjGQpLkdvL/mvburbf6L8zK7DBp4uMD4/0e";
 
-    /**
-     * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
-     * localization engine.
-     */
     private VuforiaLocalizer vuforia;
-
-    /**
-     * {@link #tfod} is the variable we will use to store our instance of the TensorFlow Object
-     * Detection engine.
-     */
     private TFObjectDetector tfod;
 
     @Override
@@ -178,8 +155,8 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
             "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.75f;
-        tfodParameters.isModelTensorFlow2 = true;
-        tfodParameters.inputSize = 300;
+//        tfodParameters.isModelTensorFlow2 = true;
+//        tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
 
         // Use loadModelFromAsset() if the TF Model is built in as an asset by Android Studio
