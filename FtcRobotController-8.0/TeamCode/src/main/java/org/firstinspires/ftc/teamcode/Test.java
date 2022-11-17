@@ -14,7 +14,7 @@ public class Test extends LinearOpMode {
     DcMotor motor0;                     //RIGHT motor
     DcMotor motor1;                     //LEFT motor
     DcMotor motor2;
-    DcMotor motor3;
+    DcMotorEx motor3;
 
     @Override
     public void runOpMode() {
@@ -25,7 +25,7 @@ public class Test extends LinearOpMode {
 
         motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor3.setTargetPosition(0);
-//        motor3.
+        motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         waitForStart();
 
@@ -39,6 +39,7 @@ public class Test extends LinearOpMode {
             double W1 = -0.5*X - (sqrt(3)/2)*Y;
             double W2 = -0.5*X + (sqrt(3)/2)*Y  ;
             double W3 = X ;
+            int targetMotorPosition = 0;
 
             motor0.setPower(W1);
             motor1.setPower(W2);
@@ -46,14 +47,17 @@ public class Test extends LinearOpMode {
 
 
             //arm
+            motor3.setVelocity(200);
+
             if(gamepad1.left_bumper){
-                motor3.setPower(1);
+                targetMotorPosition += 108;
             }
             if(gamepad1.right_bumper){
-                motor0.setPower(-0.66);
-                motor1.setPower(-0.66);
-                motor2.setPower(-0.66);
+                targetMotorPosition -= 108;
             }
+
+            motor3.setTargetPosition(targetMotorPosition);
+            armBreak();
 
             //rotate2.0
             float C = gamepad1.right_stick_x;
@@ -67,6 +71,12 @@ public class Test extends LinearOpMode {
             motor2.setPower(R3*0.94);
 
 
+        }
+    }
+    private void armBreak(){
+        while(motor3.isBusy()) {
+            telemetry.addData("Status", "Waiting for the motor to reach its target");
+            telemetry.update();
         }
     }
 
