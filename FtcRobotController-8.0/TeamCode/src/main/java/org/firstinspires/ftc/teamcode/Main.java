@@ -37,11 +37,15 @@ public class Main extends LinearOpMode {
 
             motor0.setPower(W2);
             motor1.setPower(W1);
-            motor2.setPower(W3);
-            if (gamepad1.cross) {
-                motor0.setTargetPosition(0);
-                motor1.setTargetPosition(0);
-                motor2.setTargetPosition(0);
+
+            if (X>0 || X<0) {
+                sleep(125);
+                motor2.setPower(W3);
+            }
+            else {
+                motor0.setPower(0);
+                motor1.setPower(0);
+                motor2.setPower(0);
             }
 
         }
