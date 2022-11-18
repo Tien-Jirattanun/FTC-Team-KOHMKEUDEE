@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "Controll1")
 public class Test extends LinearOpMode {
@@ -15,6 +16,8 @@ public class Test extends LinearOpMode {
     DcMotor motor1;                     //LEFT motor
     DcMotor motor2;
     DcMotorEx motor3;
+    Servo servo1;
+    Servo servo2;
 
     @Override
     public void runOpMode() {
@@ -22,10 +25,16 @@ public class Test extends LinearOpMode {
         motor1 = hardwareMap.get(DcMotor.class, "motor1");
         motor2 = hardwareMap.get(DcMotor.class, "motor2");
         motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
+        servo1 = hardwareMap.get(Servo.class, "servo1");
+        servo2 = hardwareMap.get(Servo.class, "servo2");
 
-        motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor3.setTargetPosition(0);
-        motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//
+//        motor3.setTargetPosition(0);
+//
+//        motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
 
         waitForStart();
 
@@ -47,17 +56,17 @@ public class Test extends LinearOpMode {
 
 
             //arm
-            motor3.setVelocity(200);
-
-            if(gamepad1.left_bumper){
-                targetMotorPosition += 108;
-            }
-            if(gamepad1.right_bumper){
-                targetMotorPosition -= 108;
-            }
-
-            motor3.setTargetPosition(targetMotorPosition);
-            armBreak();
+//            motor3.setVelocity(200);
+//
+//            if(gamepad1.left_bumper){
+//                targetMotorPosition += 108;
+//            }
+//            if(gamepad1.right_bumper){
+//                targetMotorPosition -= 108;
+//            }
+//
+//            motor3.setTargetPosition(targetMotorPosition);
+//            armBreak();
 
             //rotate2.0
             float C = gamepad1.right_stick_x;
@@ -71,7 +80,14 @@ public class Test extends LinearOpMode {
             motor2.setPower(R3*0.94);
 
             //griper
-            
+            if(gamepad1.left_bumper){
+                servo1.setPosition(1);
+                servo2.setPosition(0);
+            }
+            else if(gamepad1.right_bumper){
+                servo1.setPosition(0.3);
+                servo2.setPosition(0.7);
+            }
         }
     }
     private void armBreak(){
