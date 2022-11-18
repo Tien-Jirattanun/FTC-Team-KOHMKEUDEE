@@ -70,7 +70,8 @@ public class Test extends LinearOpMode {
             motor1.setPower(R2);
             motor2.setPower(R3*0.94);
 
-
+            //griper
+            
         }
     }
     private void armBreak(){
