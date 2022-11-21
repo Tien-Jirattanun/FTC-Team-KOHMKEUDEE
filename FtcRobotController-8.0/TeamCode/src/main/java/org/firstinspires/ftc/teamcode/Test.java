@@ -9,36 +9,40 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "Controll1")
+@TeleOp(name = "Control1")
 public class Test extends LinearOpMode {
 
     DcMotor motor0;                     //RIGHT motor
     DcMotor motor1;                     //LEFT motor
     DcMotor motor2;
-    //    DcMotorEx motor3;
-    DcMotor motor3;
+    DcMotorEx motor3;
+    //    DcMotor motor3;
     Servo servo1;
     Servo servo0;
+
+    int encoderData = 0;
 
     @Override
     public void runOpMode() {
         motor0 = hardwareMap.get(DcMotor.class, "motor0");
         motor1 = hardwareMap.get(DcMotor.class, "motor1");
         motor2 = hardwareMap.get(DcMotor.class, "motor2");
-//        motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
-        motor3 = hardwareMap.get(DcMotor.class, "motor3");
+        motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
+//        motor3 = hardwareMap.get(DcMotor.class, "motor3");
         servo1 = hardwareMap.get(Servo.class, "servo1");
         servo0 = hardwareMap.get(Servo.class, "servo0");
 
-//        motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //
-//        motor3.setTargetPosition(0);
+        motor3.setTargetPosition(encoderData);
 //
-//        motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
 
         waitForStart();
+
+        motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor3.setVelocity(500);
 
         while (opModeIsActive()) {
             //joy
@@ -61,17 +65,13 @@ public class Test extends LinearOpMode {
 //            motor3.setVelocity(200);
 
             if(gamepad1.square){
-                motor3.setPower(-0.7);
+                encoderData -= 50;
             }
-            else if(gamepad1.cross){
-                motor3.setPower(0.7);
-            }
-            else {
-                motor3.setPower(0);
+            else if(gamepad1.cross && encoderData < 0) {
+                encoderData += 50;
             }
 
-//            motor3.setTargetPosition(targetMotorPosition);
-//            armBreak();
+            motor3.setTargetPosition(encoderData);
 
             //rotate2.0
             float C = gamepad1.right_stick_x;
@@ -95,6 +95,7 @@ public class Test extends LinearOpMode {
             }
         }
     }
+
     private void armBreak(){
         while(motor3.isBusy()) {
             telemetry.addData("Status", "Waiting for the motor to reach its target");
