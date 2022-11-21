@@ -182,8 +182,8 @@ public class Main extends LinearOpMode {
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.02f;
-//        tfodParameters.isModelTensorFlow2 = true;
-//        tfodParameters.inputSize = 300;
+        tfodParameters.isModelTensorFlow2 = true;
+        tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
 
         // Use loadModelFromAsset() if the TF Model is built in as an asset by Android Studio
