@@ -54,7 +54,32 @@ public class Test extends LinearOpMode {
 //            motor1.setPower(W2);
 //            motor2.setPower(W3*0.95);
 
-            if (gamepad1.dpad_up){
+            if (gamepad1.dpad_left && gamepad1.dpad_up){
+                motor0.setPower(0);
+                motor1.setPower(-1);
+                motor2.setPower(1);
+                motor3.setPower(0);
+            }
+            else if (gamepad1.dpad_left && gamepad1.dpad_down){
+                motor0.setPower(0);
+                motor1.setPower(1);
+                motor2.setPower(-1);
+                motor3.setPower(0);
+            }
+            else if (gamepad1.dpad_right && gamepad1.dpad_up){
+                motor0.setPower(1);
+                motor1.setPower(0);
+                motor2.setPower(0);
+                motor3.setPower(-1);
+            }
+            else if (gamepad1.dpad_right && gamepad1.dpad_down){
+                motor0.setPower(-1);
+                motor1.setPower(0);
+                motor2.setPower(0);
+                motor3.setPower(1);
+            }
+
+            else if (gamepad1.dpad_up){
                 motor0.setPower(1);
                 motor1.setPower(-1);
                 motor2.setPower(1);
@@ -89,30 +114,6 @@ public class Test extends LinearOpMode {
                 motor1.setPower(-1);
                 motor2.setPower(-1);
                 motor3.setPower(-1);
-            }
-            else if (gamepad1.dpad_left && gamepad1.dpad_up){
-                motor0.setPower(0);
-                motor1.setPower(-1);
-                motor2.setPower(1);
-                motor3.setPower(0);
-            }
-            else if (gamepad1.dpad_left && gamepad1.dpad_down){
-                motor0.setPower(0);
-                motor1.setPower(1);
-                motor2.setPower(-1);
-                motor3.setPower(0);
-            }
-            else if (gamepad1.dpad_right && gamepad1.dpad_up){
-                motor0.setPower(1);
-                motor1.setPower(0);
-                motor2.setPower(0);
-                motor3.setPower(-1);
-            }
-            else if (gamepad1.dpad_right && gamepad1.dpad_down){
-                motor0.setPower(-1);
-                motor1.setPower(0);
-                motor2.setPower(0);
-                motor3.setPower(1);
             }
 
             //arm
