@@ -114,6 +114,12 @@ public class Test extends LinearOpMode {
                 motor2.setPower(0);
                 motor3.setPower(1);
             }
+            else{
+                motor0.setPower(0);
+                motor1.setPower(0);
+                motor2.setPower(0);
+                motor3.setPower(0);
+            }
 
             //arm
 //            motor3.setVelocity(200);
