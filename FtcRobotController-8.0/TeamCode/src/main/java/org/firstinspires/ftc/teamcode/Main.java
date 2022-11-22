@@ -51,7 +51,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
+@TeleOp(name = "Concept: TensorFlow", group = "Concept")
 //@Disabled
 public class Main extends LinearOpMode {
 
@@ -62,8 +62,8 @@ public class Main extends LinearOpMode {
      * has been downloaded to the Robot Controller's SD FLASH memory, it must to be loaded using loadModelFromFile()
      * Here we assume it's an Asset.    Also see method initTfod() below .
      */
-   private static final String TFOD_MODEL_ASSET = "Sci.tflite";
-     //private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/Sci.tflite";
+   //private static final String TFOD_MODEL_ASSET = "Sci.tflite";
+     private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/Sci.tflite";
 
 
     private static final String[] LABELS = {
@@ -188,7 +188,7 @@ public class Main extends LinearOpMode {
 
         // Use loadModelFromAsset() if the TF Model is built in as an asset by Android Studio
         // Use loadModelFromFile() if you have downloaded a custom team model to the Robot Controller's FLASH.
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
-        // tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
+//        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
+        tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
     }
 }
