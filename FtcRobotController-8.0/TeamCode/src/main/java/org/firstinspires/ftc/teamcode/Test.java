@@ -16,7 +16,7 @@ public class Test extends LinearOpMode {
     DcMotorEx motor1;                     //LEFT motor
     DcMotorEx motor2;
     DcMotorEx motor3;
-    //    DcMotor motor3;
+//    DcMotorEx motor4;
     Servo servo1;
     Servo servo0;
 
@@ -28,6 +28,7 @@ public class Test extends LinearOpMode {
         motor1 = hardwareMap.get(DcMotorEx.class, "motor1");
         motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
         motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
+//        motor4 = hardwareMap.get(DcMotorEx.class, "motor4");
 //        servo1 = hardwareMap.get(Servo.class, "servo1");
 //        servo0 = hardwareMap.get(Servo.class, "servo0");
 
@@ -91,6 +92,16 @@ public class Test extends LinearOpMode {
             else if(gamepad1.right_bumper){
                 servo0.setPosition(0.6);
                 servo1.setPosition(0.4);
+            }
+
+            //arm
+            motor3.setVelocity(200);
+
+            if(gamepad1.square){
+                encoderData -= 50;
+            }
+            else if(gamepad1.cross && encoderData < 0) {
+                encoderData += 50;
             }
 
             telemetry.addData("thick0 : ", motor0.getCurrentPosition());
