@@ -83,6 +83,16 @@ public class Test extends LinearOpMode {
                 motor3.setVelocity(motorVelocity2);
             }
 
+            //griper
+            if(gamepad1.left_bumper){
+                servo0.setPosition(1);
+                servo1.setPosition(0);
+            }
+            else if(gamepad1.right_bumper){
+                servo0.setPosition(0.6);
+                servo1.setPosition(0.4);
+            }
+
             telemetry.addData("thick0 : ", motor0.getCurrentPosition());
             telemetry.addData("thick1 : ", motor1.getCurrentPosition());
             telemetry.addData("thick2 : ", motor2.getCurrentPosition());
