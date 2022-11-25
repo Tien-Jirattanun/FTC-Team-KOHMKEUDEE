@@ -18,6 +18,8 @@ public class Test extends LinearOpMode {
     Servo servo1;
     Servo servo0;
 
+    boolean armStatus = true;
+
 
     @Override
     public void runOpMode() {
@@ -72,31 +74,34 @@ public class Test extends LinearOpMode {
                 motor3.setVelocity(motorVelocity1);
             }
             else if(gamepad1.dpad_left){
+                motor0.setVelocity(motorVelocity1);
+                motor1.setVelocity(motorVelocity1);
                 motor2.setVelocity(motorVelocity1);
-                motor0.setVelocity(motorVelocity0);
                 motor3.setVelocity(motorVelocity1);
-                motor1.setVelocity(motorVelocity0);
             }
             else if(gamepad1.dpad_right){
-                motor1.setVelocity(motorVelocity1);
+                motor1.setVelocity(motorVelocity0);
                 motor3.setVelocity(motorVelocity0);
-                motor0.setVelocity(motorVelocity1);
+                motor0.setVelocity(motorVelocity0);
                 motor2.setVelocity(motorVelocity0);
             }
 
 
             //rotate
             else if(gamepad1.right_stick_x > 0){
-                motor0.setVelocity(motorVelocity1);
-                motor1.setVelocity(motorVelocity1);
+
                 motor2.setVelocity(motorVelocity1);
+                motor0.setVelocity(motorVelocity0);
                 motor3.setVelocity(motorVelocity1);
+                motor1.setVelocity(motorVelocity0);
+
+
             }
             else if(gamepad1.right_stick_x < 0){
-                motor0.setVelocity(motorVelocity0);
-                motor1.setVelocity(motorVelocity0);
-                motor2.setVelocity(motorVelocity0);
+                motor1.setVelocity(motorVelocity1);
                 motor3.setVelocity(motorVelocity0);
+                motor0.setVelocity(motorVelocity1);
+                motor2.setVelocity(motorVelocity0);
             }
 
             else {
@@ -108,30 +113,46 @@ public class Test extends LinearOpMode {
 
 
             //griper
-            if(gamepad1.left_bumper){
+            if(gamepad1.left_bumper){           //open
                 servo0.setPosition(1);
                 servo1.setPosition(0);
+
+                armStatus = true;
+
+                encoderData = 0;
+
             }
-            else if(gamepad1.right_bumper){
+            else if(gamepad1.right_bumper){     //close
                 servo0.setPosition(0.5);
                 servo1.setPosition(0.5);
+
+                armStatus = false;
+
+                encoderData = 500;
+                motor4.setTargetPosition(encoderData);
+
             }
 
             //arm
-
-            if(gamepad1.cross && encoderData > -6300){
+            if(gamepad1.cross && encoderData > -6300 && armStatus == false){
                 encoderData = -6300;
             }
-            else if(gamepad1.square && encoderData > -10900) {
+            else if(gamepad1.square && encoderData > -10900 && armStatus == false) {
                 encoderData = -10900;
             }
-            else if(gamepad1.triangle && encoderData > -14340){
+            else if(gamepad1.triangle && encoderData > -14340 && armStatus == false){
                 encoderData = -14340;
             }
-            else if(gamepad1.circle){
-                encoderData = 0;
-            }
             motor4.setTargetPosition(encoderData);
+
+            //manual control
+            motor4.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            if(gamepad1.left_trigger > 0){
+                motor4.setVelocity(2400 * gamepad1.left_trigger);
+            }
+            else if(gamepad1.right_trigger > 0){
+                motor4.setVelocity(-2400 * gamepad1.left_trigger);
+            }
 
             telemetry.addData("thick0 : ", motor0.getCurrentPosition());
             telemetry.addData("thick1 : ", motor1.getCurrentPosition());
