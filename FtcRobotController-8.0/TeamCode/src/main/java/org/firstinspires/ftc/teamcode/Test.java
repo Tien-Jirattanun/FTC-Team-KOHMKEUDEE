@@ -63,11 +63,11 @@ public class Test extends LinearOpMode {
             motorVelocity2 = 0;
 
 
-//            if(gamepad1.start || gamepad1.right_stick_button){
-//                motorVelocity0 /= 3;
-//                motorVelocity1 /= 3;
-//                motorVelocity2 /= 3;
-//            }
+            if(gamepad1.start || gamepad1.right_stick_button){
+                motorVelocity0 /= 3;
+                motorVelocity1 /= 3;
+                motorVelocity2 /= 3;
+            }
 
             if (gamepad1.dpad_up){
                 motor0.setVelocity(motorVelocity1);
@@ -94,18 +94,18 @@ public class Test extends LinearOpMode {
                 motor2.setVelocity(motorVelocity0);
             }
             //rotate
-//            else if(gamepad1.right_stick_x > 0){
-//                motor0.setVelocity(motorVelocity0);
-//                motor1.setVelocity(motorVelocity0);
-//                motor2.setVelocity(motorVelocity0);
-//                motor3.setVelocity(motorVelocity0);
-//            }
-//            else if(gamepad1.right_stick_x < 0){
-//                motor0.setVelocity(motorVelocity1);
-//                motor1.setVelocity(motorVelocity1);
-//                motor2.setVelocity(motorVelocity1);
-//                motor3.setVelocity(motorVelocity1);
-//            }
+            else if(gamepad1.right_stick_x > 0){
+                motor0.setVelocity(motorVelocity0);
+                motor1.setVelocity(motorVelocity0);
+                motor2.setVelocity(motorVelocity0);
+                motor3.setVelocity(motorVelocity0);
+            }
+            else if(gamepad1.right_stick_x < 0){
+                motor0.setVelocity(motorVelocity1);
+                motor1.setVelocity(motorVelocity1);
+                motor2.setVelocity(motorVelocity1);
+                motor3.setVelocity(motorVelocity1);
+            }
             else {
                 motor0.setVelocity(motorVelocity2);
                 motor1.setVelocity(motorVelocity2);
