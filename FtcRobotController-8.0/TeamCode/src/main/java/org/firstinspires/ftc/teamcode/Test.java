@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static java.lang.Math.sqrt;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,24 +10,42 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp(name = "Control1")
 public class Test extends LinearOpMode {
 
-    DcMotor motor0;                     //RIGHT motor
-    DcMotor motor1;                     //LEFT motor
-    DcMotor motor2;
-    DcMotor motor3;
-    //    DcMotor motor3;
+    DcMotorEx motor0;                     //RIGHT motor
+    DcMotorEx motor1;                     //LEFT motor
+    DcMotorEx motor2;
+    DcMotorEx motor3;
+    DcMotorEx motor4;
     Servo servo1;
     Servo servo0;
 
-    int encoderData = 0;
 
     @Override
     public void runOpMode() {
-        motor0 = hardwareMap.get(DcMotor.class, "motor0");
-        motor1 = hardwareMap.get(DcMotor.class, "motor1");
-        motor2 = hardwareMap.get(DcMotor.class, "motor2");
-        motor3 = hardwareMap.get(DcMotor.class, "motor3");
+        motor0 = hardwareMap.get(DcMotorEx.class, "motor0");
+        motor1 = hardwareMap.get(DcMotorEx.class, "motor1");
+        motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
+        motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
+        motor4 = hardwareMap.get(DcMotorEx.class, "motor4");
         servo1 = hardwareMap.get(Servo.class, "servo1");
         servo0 = hardwareMap.get(Servo.class, "servo0");
+
+        motor0.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motor1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motor2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motor3.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        motor0.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        motor1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        motor2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        motor3.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+
+
+        double motorVelocity0 = 1440;
+        double motorVelocity1 = -1440;
+        double motorVelocity2 = 0;
+        int encoderData = 0;
 
 
 
@@ -37,112 +53,58 @@ public class Test extends LinearOpMode {
 
         waitForStart();
 
+        motor4.setTargetPosition(encoderData);
+        motor4.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        motor4.setVelocity(2400);
+
         while (opModeIsActive()) {
 
-            //joy
-//            double R = 0.155;
-//            float X = gamepad1.left_stick_x;
-//            float Y = gamepad1.left_stick_y;
-//            byte A = 0;
-//            byte B = 0;
-//            double W1 = -0.5*X - (sqrt(3)/2)*Y;
-//            double W2 = -0.5*X + (sqrt(3)/2)*Y  ;
-//            double W3 = X ;
-//            int targetMotorPosition = 0;
-//
-//            motor0.setPower(W1);
-//            motor1.setPower(W2);
-//            motor2.setPower(W3*0.95);
-
             if (gamepad1.dpad_up){
-                motor0.setPower(1);
-                motor1.setPower(-1);
-                motor2.setPower(1);
-                motor3.setPower(-1);
+                motor0.setVelocity(motorVelocity1);
+                motor1.setVelocity(motorVelocity0);
+                motor2.setVelocity(motorVelocity1);
+                motor3.setVelocity(motorVelocity0);
             }
             else if (gamepad1.dpad_down){
-                motor0.setPower(-1);
-                motor1.setPower(1);
-                motor2.setPower(-1);
-                motor3.setPower(1);
+                motor0.setVelocity(motorVelocity0);
+                motor1.setVelocity(motorVelocity1);
+                motor2.setVelocity(motorVelocity0);
+                motor3.setVelocity(motorVelocity1);
             }
-            else if (gamepad1.dpad_right){
-                motor0.setPower(1);
-                motor1.setPower(1);
-                motor2.setPower(-1);
-                motor3.setPower(-1);
+            else if(gamepad1.dpad_left){
+                motor2.setVelocity(motorVelocity1);
+                motor0.setVelocity(motorVelocity0);
+                motor3.setVelocity(motorVelocity1);
+                motor1.setVelocity(motorVelocity0);
             }
-            else if (gamepad1.dpad_left){
-                motor0.setPower(-1);
-                motor1.setPower(-1);
-                motor2.setPower(1);
-                motor3.setPower(1);
-            }
-            else if (gamepad1.cross){
-                motor0.setPower(1);
-                motor1.setPower(1);
-                motor2.setPower(1);
-                motor3.setPower(1);
-            }
-            else if (gamepad1.square){
-                motor0.setPower(-1);
-                motor1.setPower(-1);
-                motor2.setPower(-1);
-                motor3.setPower(-1);
-            }
-            else if (gamepad1.dpad_left && gamepad1.dpad_up){
-                motor0.setPower(0);
-                motor1.setPower(-1);
-                motor2.setPower(1);
-                motor3.setPower(0);
-            }
-            else if (gamepad1.dpad_left && gamepad1.dpad_down){
-                motor0.setPower(0);
-                motor1.setPower(1);
-                motor2.setPower(-1);
-                motor3.setPower(0);
-            }
-            else if (gamepad1.dpad_right && gamepad1.dpad_up){
-                motor0.setPower(1);
-                motor1.setPower(0);
-                motor2.setPower(0);
-                motor3.setPower(-1);
-            }
-            else if (gamepad1.dpad_right && gamepad1.dpad_down){
-                motor0.setPower(-1);
-                motor1.setPower(0);
-                motor2.setPower(0);
-                motor3.setPower(1);
-            }
-            else{
-                motor0.setPower(0);
-                motor1.setPower(0);
-                motor2.setPower(0);
-                motor3.setPower(0);
+            else if(gamepad1.dpad_right){
+                motor1.setVelocity(motorVelocity1);
+                motor3.setVelocity(motorVelocity0);
+                motor0.setVelocity(motorVelocity1);
+                motor2.setVelocity(motorVelocity0);
             }
 
-            //arm
-//            motor3.setVelocity(200);
-//
-//            if(gamepad1.square){
-//                encoderData -= 50;
-//            }
-//            else if(gamepad1.cross && encoderData < 0) {
-//                encoderData += 50;
-//            }
-//
-//            motor3.setTargetPosition(encoderData);
 
-            //rotate2.0
-            float C = gamepad1.right_stick_x;
+            //rotate
+            else if(gamepad1.right_stick_x > 0){
+                motor0.setVelocity(motorVelocity1);
+                motor1.setVelocity(motorVelocity1);
+                motor2.setVelocity(motorVelocity1);
+                motor3.setVelocity(motorVelocity1);
+            }
+            else if(gamepad1.right_stick_x < 0){
+                motor0.setVelocity(motorVelocity0);
+                motor1.setVelocity(motorVelocity0);
+                motor2.setVelocity(motorVelocity0);
+                motor3.setVelocity(motorVelocity0);
+            }
 
-            double R1 = (0.5*C)*0.69;
-            double R2 = (0.5*C)*0.69;
-            double R3 = C*0.69 ;
-
-            motor0.setPower(R1*-1);
-            motor1.setPower(R2*-1);
-            motor2.setPower(R3*-0.94);
+            else {
+                motor0.setVelocity(motorVelocity2);
+                motor1.setVelocity(motorVelocity2);
+                motor2.setVelocity(motorVelocity2);
+                motor3.setVelocity(motorVelocity2);
+            }
 
 
             //griper
@@ -151,21 +113,38 @@ public class Test extends LinearOpMode {
                 servo1.setPosition(0);
             }
             else if(gamepad1.right_bumper){
-                servo0.setPosition(0.6);
-                servo1.setPosition(0.4);
+                servo0.setPosition(0.5);
+                servo1.setPosition(0.5);
             }
-        }
-    }
 
-    private void armBreak(){
-        while(motor3.isBusy()) {
-            telemetry.addData("Status", "Waiting for the motor to reach its target");
+            //arm
+
+            if(gamepad1.cross && encoderData > -6300){
+                encoderData = -6300;
+            }
+            else if(gamepad1.square && encoderData > -10900) {
+                encoderData = -10900;
+            }
+            else if(gamepad1.triangle && encoderData > -14340){
+                encoderData = -14340;
+            }
+            else if(gamepad1.circle){
+                encoderData = 0;
+            }
+            motor4.setTargetPosition(encoderData);
+
+            telemetry.addData("thick0 : ", motor0.getCurrentPosition());
+            telemetry.addData("thick1 : ", motor1.getCurrentPosition());
+            telemetry.addData("thick2 : ", motor2.getCurrentPosition());
+            telemetry.addData("thick3 : ", motor3.getCurrentPosition());
+            telemetry.addData("thick arm : ",motor4.getCurrentPosition());
+            telemetry.addData("velocity", motor4.getVelocity());
             telemetry.update();
         }
+
     }
 
 }
-
 
 
 
