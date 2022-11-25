@@ -42,7 +42,7 @@ public class Test extends LinearOpMode {
         motor1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         motor2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         motor3.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        motor4.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+
 
 
         double motorVelocity0 = 1440;
@@ -50,10 +50,15 @@ public class Test extends LinearOpMode {
         double motorVelocity2 = 0;
         int encoderData = 0;
 
-        motor4.setTargetPosition(encoderData);
+
+
 
 
         waitForStart();
+
+        motor4.setTargetPosition(encoderData);
+        motor4.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        motor4.setVelocity(400);
 
         while (opModeIsActive()) {
 
@@ -117,11 +122,17 @@ public class Test extends LinearOpMode {
 
             //arm
 
-            if(gamepad1.square){
-                encoderData -= 50;
+            if(gamepad1.cross && encoderData > -6300){
+                encoderData = -6300;
             }
-            else if(gamepad1.cross) {
-                encoderData += 50;
+            else if(gamepad1.square && encoderData > -10900) {
+                encoderData = -10900;
+            }
+            else if(gamepad1.triangle && encoderData > -14340){
+                encoderData = -14340;
+            }
+            else if(gamepad1.circle){
+                encoderData = 0;
             }
             motor4.setTargetPosition(encoderData);
 
@@ -130,6 +141,7 @@ public class Test extends LinearOpMode {
             telemetry.addData("thick2 : ", motor2.getCurrentPosition());
             telemetry.addData("thick3 : ", motor3.getCurrentPosition());
             telemetry.addData("thick arm : ",motor4.getCurrentPosition());
+            telemetry.addData("velocity", motor4.getVelocity());
             telemetry.update();
         }
 
