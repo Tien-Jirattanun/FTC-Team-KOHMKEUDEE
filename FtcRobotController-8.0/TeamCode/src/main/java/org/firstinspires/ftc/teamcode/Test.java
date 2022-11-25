@@ -116,15 +116,12 @@ public class Test extends LinearOpMode {
             //arm
 
             if(gamepad1.square){
-                motor4.setPower(-1);
+                encoderData -= 50;
             }
             else if(gamepad1.cross) {
-                motor4.setPower(1);
+                encoderData += 50;
             }
-            else {
-                motor4.setPower(0);
-            }
-
+            
 
             telemetry.addData("thick0 : ", motor0.getCurrentPosition());
             telemetry.addData("thick1 : ", motor1.getCurrentPosition());
