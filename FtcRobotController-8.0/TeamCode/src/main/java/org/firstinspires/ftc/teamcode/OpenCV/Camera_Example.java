@@ -27,6 +27,8 @@ import java.util.Locale;
 public class Camera_Example extends LinearOpMode
 {
 
+    private BNO055IMU imu;
+
     int encoderData = 0;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -152,6 +154,17 @@ public class Camera_Example extends LinearOpMode
 
 
         if (opModeIsActive()) {
+
+            //IMU
+            BNO055IMU.Parameters imuParameters;
+            Orientation angles;
+
+            //Getting data
+            /*
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            telemetry.addData("rot about X", angles.thirdAngle);
+             */
+
             motor0 = hardwareMap.get(DcMotorEx.class, "motor0");
             motor1 = hardwareMap.get(DcMotorEx.class, "motor1");
             motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
