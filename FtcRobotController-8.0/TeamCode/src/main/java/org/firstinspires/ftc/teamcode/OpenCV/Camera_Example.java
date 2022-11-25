@@ -5,7 +5,9 @@ import android.util.Log;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -15,7 +17,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
 
-@Autonomous(name = "ARcam")
+@Autonomous(name = "AR and Run")
 public class Camera_Example extends LinearOpMode
 {
     OpenCvCamera camera;
@@ -38,8 +40,8 @@ public class Camera_Example extends LinearOpMode
     //int ID_TAG_OF_INTEREST = 18; // Tag ID 18 from the 36h11 family
     //tags of sleeve
 
-    int one = 3;
-    int two = 7;
+    int one = 7;
+    int two = 3;
     int three = 13;
 
     AprilTagDetection tagOfInterest = null;
@@ -47,6 +49,15 @@ public class Camera_Example extends LinearOpMode
     @Override
     public void runOpMode()
     {
+
+        //motor and servo zone
+
+        DcMotorEx motor0;                     //RIGHT motor
+        DcMotorEx motor1;                     //LEFT motor
+        DcMotorEx motor2;
+        DcMotorEx motor3;
+
+        //camera code
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
@@ -72,7 +83,11 @@ public class Camera_Example extends LinearOpMode
         /*
          * The INIT-loop:
          * This REPLACES waitForStart!
+         *
          */
+
+        //take the snap shot and find the id
+
         while (!isStarted() && !isStopRequested())
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
@@ -131,37 +146,65 @@ public class Camera_Example extends LinearOpMode
             telemetry.update();
             sleep(20);
         }
-
-        /*
-         * The START command just came in: now work off the latest snapshot acquired
-         * during the init loop.
-         */
-
+        // take the snap shot and cal the AR
         /* Update the telemetry */
-        if(tagOfInterest != null)
-        {
-            telemetry.addLine("Tag snapshot:\n");
-            tagToTelemetry(tagOfInterest);
-            telemetry.update();
-        }
-        else
-        {
-            telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
-            telemetry.update();
-        }
+//        if(tagOfInterest != null)
+//        {
+//            telemetry.addLine("Tag snapshot:\n");
+//            tagToTelemetry(tagOfInterest);
+//            telemetry.update();
+//        }
+//        else
+//        {
+//            telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
+//            telemetry.update();
+//        }
+//
+//        /* Actually do something useful */
+//        if (tagOfInterest.id == one){
+//            Log.i("found AR", "AR one");
+//        }
+//        else if (tagOfInterest.id == two){
+//            Log.i("found AR", "AR two");
+//        }
+//        else if (tagOfInterest.id == three){
+//            Log.i("found AR", "AR three");
+//        }
 
-        /* Actually do something useful */
-        if (tagOfInterest.id == one){
-            Log.i("found AR", "AR one");
+        if (opModeIsActive()) {
+            motor0 = hardwareMap.get(DcMotorEx.class, "motor0");
+            motor1 = hardwareMap.get(DcMotorEx.class, "motor1");
+            motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
+            motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
+
+            //Autonomous OPmode
+
+
+
+
+            //after the run
+            if (tagOfInterest.id == one){
+                telemetry.addData("task","Go One");
+            }
+            else if(tagOfInterest.id == two){
+                telemetry.addData("task","Go Two");
+            }
+            else if(tagOfInterest.id == three){
+                telemetry.addData("task", "Go Three");
+            }
+
+            sleep(50000);
+
         }
-        else if (tagOfInterest == null || tagOfInterest.id == two){
-            Log.i("found AR", "AR two");
-        }
-        else if (tagOfInterest.id == three){
-            Log.i("found AR", "AR three");
-        }
-        /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
-        while (opModeIsActive()) {sleep(20);}
+    }
+
+
+    //meter cal
+    private int meterCal(int S){            //cm
+
+        int thick = (int) ((((S / 5) * 360) / (2 * 3.14)) * 1440) / 360;
+
+        return thick;
     }
 
     void tagToTelemetry(AprilTagDetection detection)
