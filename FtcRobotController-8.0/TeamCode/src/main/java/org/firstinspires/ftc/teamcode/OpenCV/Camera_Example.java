@@ -5,6 +5,7 @@ import android.util.Log;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 @Autonomous(name = "AR and Run")
 public class Camera_Example extends LinearOpMode
 {
+
+    int encoderData = 0;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
@@ -46,18 +49,12 @@ public class Camera_Example extends LinearOpMode
 
     AprilTagDetection tagOfInterest = null;
 
+
+
     @Override
     public void runOpMode()
     {
 
-        //motor and servo zone
-
-        DcMotorEx motor0;                     //RIGHT motor
-        DcMotorEx motor1;                     //LEFT motor
-        DcMotorEx motor2;
-        DcMotorEx motor3;
-
-        //camera code
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
@@ -79,15 +76,6 @@ public class Camera_Example extends LinearOpMode
         });
 
         telemetry.setMsTransmissionInterval(50);
-
-        /*
-         * The INIT-loop:
-         * This REPLACES waitForStart!
-         *
-         */
-
-        //take the snap shot and find the id
-
         while (!isStarted() && !isStopRequested())
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
@@ -146,38 +134,33 @@ public class Camera_Example extends LinearOpMode
             telemetry.update();
             sleep(20);
         }
-        // take the snap shot and cal the AR
-        /* Update the telemetry */
-//        if(tagOfInterest != null)
-//        {
-//            telemetry.addLine("Tag snapshot:\n");
-//            tagToTelemetry(tagOfInterest);
-//            telemetry.update();
-//        }
-//        else
-//        {
-//            telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
-//            telemetry.update();
-//        }
-//
-//        /* Actually do something useful */
-//        if (tagOfInterest.id == one){
-//            Log.i("found AR", "AR one");
-//        }
-//        else if (tagOfInterest.id == two){
-//            Log.i("found AR", "AR two");
-//        }
-//        else if (tagOfInterest.id == three){
-//            Log.i("found AR", "AR three");
-//        }
+
+        //motor and servo zone
+
+        DcMotorEx motor0;                     //RIGHT motor
+        DcMotorEx motor1;                     //LEFT motor
+        DcMotorEx motor2;
+        DcMotorEx motor3;
+
+        DcMotorEx motor4;
 
         if (opModeIsActive()) {
             motor0 = hardwareMap.get(DcMotorEx.class, "motor0");
             motor1 = hardwareMap.get(DcMotorEx.class, "motor1");
             motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
             motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
+            motor4 = hardwareMap.get(DcMotorEx.class, "motor4");
 
-            //Autonomous OPmode
+            motor0.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+            motor1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+            motor2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+            motor3.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+            waitForStart();
+
+            motor4.setTargetPosition(encoderData);
+            motor4.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            motor4.setVelocity(1440);
 
 
 
@@ -185,15 +168,34 @@ public class Camera_Example extends LinearOpMode
             //after the run
             if (tagOfInterest.id == one){
                 telemetry.addData("task","Go One");
+                telemetry.update();
+
+                //High junction
+                motor0.setTargetPosition(-2360);
+                motor1.setTargetPosition(2360);
+                motor2.setTargetPosition(-2360);
+                motor3.setTargetPosition(2360);
+
             }
             else if(tagOfInterest.id == two){
                 telemetry.addData("task","Go Two");
+                telemetry.update();
+                //High junction
+                motor0.setTargetPosition(-2360);
+                motor1.setTargetPosition(2360);
+                motor2.setTargetPosition(-2360);
+                motor3.setTargetPosition(2360);
             }
             else if(tagOfInterest.id == three){
                 telemetry.addData("task", "Go Three");
+                telemetry.update();
+                //High junction
+                motor0.setTargetPosition(-2360);
+                motor1.setTargetPosition(2360);
+                motor2.setTargetPosition(-2360);
+                motor3.setTargetPosition(2360);
             }
 
-            sleep(50000);
 
         }
     }
