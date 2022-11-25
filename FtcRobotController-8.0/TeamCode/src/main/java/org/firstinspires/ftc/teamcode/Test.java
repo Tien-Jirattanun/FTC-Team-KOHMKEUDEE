@@ -16,7 +16,7 @@ public class Test extends LinearOpMode {
     DcMotorEx motor1;                     //LEFT motor
     DcMotorEx motor2;
     DcMotorEx motor3;
-    DcMotor motor4;
+    DcMotorEx motor4;
     Servo servo1;
     Servo servo0;
 
@@ -27,7 +27,7 @@ public class Test extends LinearOpMode {
         motor1 = hardwareMap.get(DcMotorEx.class, "motor1");
         motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
         motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
-        motor4 = hardwareMap.get(DcMotor.class, "motor4");
+        motor4 = hardwareMap.get(DcMotorEx.class, "motor4");
         servo1 = hardwareMap.get(Servo.class, "servo1");
         servo0 = hardwareMap.get(Servo.class, "servo0");
 
@@ -35,13 +35,14 @@ public class Test extends LinearOpMode {
         motor1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         motor2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         motor3.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        motor4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor4.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
 
         motor0.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         motor1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         motor2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         motor3.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        motor4.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
 
         double motorVelocity0 = 1440;
@@ -49,7 +50,8 @@ public class Test extends LinearOpMode {
         double motorVelocity2 = 0;
         int encoderData = 0;
 
-        motor4.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor4.setTargetPosition(encoderData);
+
 
         waitForStart();
 
@@ -121,7 +123,7 @@ public class Test extends LinearOpMode {
             else if(gamepad1.cross) {
                 encoderData += 50;
             }
-            
+            motor4.setTargetPosition(encoderData);
 
             telemetry.addData("thick0 : ", motor0.getCurrentPosition());
             telemetry.addData("thick1 : ", motor1.getCurrentPosition());
