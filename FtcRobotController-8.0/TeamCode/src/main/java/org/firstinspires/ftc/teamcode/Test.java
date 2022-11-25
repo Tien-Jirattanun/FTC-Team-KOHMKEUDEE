@@ -35,7 +35,7 @@ public class Test extends LinearOpMode {
         motor1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         motor2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         motor3.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        //motor4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
         motor0.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -49,17 +49,11 @@ public class Test extends LinearOpMode {
         double motorVelocity2 = 0;
         int encoderData = 0;
 
-//        motor4.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor4.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         waitForStart();
 
-
-//        motor4.setVelocity(200);
-
-
         while (opModeIsActive()) {
-
-
 
             if (gamepad1.dpad_up){
                 motor0.setVelocity(motorVelocity1);
@@ -107,6 +101,7 @@ public class Test extends LinearOpMode {
                 motor2.setVelocity(motorVelocity2);
                 motor3.setVelocity(motorVelocity2);
             }
+
 
             //griper
             if(gamepad1.left_bumper){
