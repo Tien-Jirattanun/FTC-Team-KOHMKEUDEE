@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "Control1")
-public class Test extends LinearOpMode {
+@TeleOp(name = "Control1")                //The name of the program
+public class Test extends LinearOpMode {  //This class extends from LinearOpMode
 
-    DcMotorEx motor0;                     //RIGHT motor
-    DcMotorEx motor1;                     //LEFT motor
+    DcMotorEx motor0;
+    DcMotorEx motor1;
     DcMotorEx motor2;
     DcMotorEx motor3;
     DcMotorEx motor4;
@@ -19,7 +19,7 @@ public class Test extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        motor0 = hardwareMap.get(DcMotorEx.class, "motor0");
+        motor0 = hardwareMap.get(DcMotorEx.class, "motor0");              //make robot know that the motor encoder have plug in
         motor1 = hardwareMap.get(DcMotorEx.class, "motor1");
         motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
         motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
@@ -27,22 +27,20 @@ public class Test extends LinearOpMode {
         servo1 = hardwareMap.get(Servo.class, "servo1");
         servo0 = hardwareMap.get(Servo.class, "servo0");
 
-        motor0.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motor0.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);                   //Reset the encoder thick to zero
         motor1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         motor2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         motor3.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-
-        motor0.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        motor0.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);                        //Set encoder to RUN_USING_ENCODER mode
         motor1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         motor2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         motor3.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-
-        double motorVelocity0 = 1440;
+        double motorVelocity0 = 1440;                                               //Set the velocity of the motor encoder in the unit thick/sec
         double motorVelocity1 = -1440;
         double motorVelocity2 = 0;
-        double X=gamepad1.right_stick_x;
+        double X = gamepad1.right_stick_x;
 
         int encoderData = 0;
 
