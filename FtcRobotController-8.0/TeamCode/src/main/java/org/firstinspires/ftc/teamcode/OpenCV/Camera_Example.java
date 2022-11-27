@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode.OpenCV;
 
-import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -86,7 +83,7 @@ public class Camera_Example extends LinearOpMode
          *
          */
 
-        //take the snap shot and find the id
+        //take snap se thhot and find the id
 
         while (!isStarted() && !isStopRequested())
         {
@@ -146,30 +143,6 @@ public class Camera_Example extends LinearOpMode
             telemetry.update();
             sleep(20);
         }
-        // take the snap shot and cal the AR
-        /* Update the telemetry */
-//        if(tagOfInterest != null)
-//        {
-//            telemetry.addLine("Tag snapshot:\n");
-//            tagToTelemetry(tagOfInterest);
-//            telemetry.update();
-//        }
-//        else
-//        {
-//            telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
-//            telemetry.update();
-//        }
-//
-//        /* Actually do something useful */
-//        if (tagOfInterest.id == one){
-//            Log.i("found AR", "AR one");
-//        }
-//        else if (tagOfInterest.id == two){
-//            Log.i("found AR", "AR two");
-//        }
-//        else if (tagOfInterest.id == three){
-//            Log.i("found AR", "AR three");
-//        }
 
         if (opModeIsActive()) {
             motor0 = hardwareMap.get(DcMotorEx.class, "motor0");
