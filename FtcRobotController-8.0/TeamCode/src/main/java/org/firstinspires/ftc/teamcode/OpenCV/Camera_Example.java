@@ -1,11 +1,19 @@
 package org.firstinspires.ftc.teamcode.OpenCV;
 
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -13,6 +21,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 @Autonomous(name = "AR and Run")
 public class Camera_Example extends LinearOpMode
@@ -144,13 +153,40 @@ public class Camera_Example extends LinearOpMode
             sleep(20);
         }
 
+        /* IMU configuration */
+
+        BNO055IMU imu;
+        Orientation angles;
+        Acceleration gravity;
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled      = true;
+        parameters.loggingTag          = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+
+        /* OPMODE */
+
         if (opModeIsActive()) {
             motor0 = hardwareMap.get(DcMotorEx.class, "motor0");
             motor1 = hardwareMap.get(DcMotorEx.class, "motor1");
             motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
             motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
 
-            //Autonomous OPmode
+
+
+            waitForStart();
+
+            //IMU
+
+//            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//            telemetry.addData("pitch", formatAngle(angles.angleUnit, angles.thirdAngle));
+
 
 
 
@@ -166,18 +202,17 @@ public class Camera_Example extends LinearOpMode
                 telemetry.addData("task", "Go Three");
             }
 
-            sleep(50000);
+            telemetry.update();
 
         }
     }
 
+    String formatAngle(AngleUnit angleUnit, double angle) {
+        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
+    }
 
-    //meter cal
-    private int meterCal(int S){            //cm
-
-        int thick = (int) ((((S / 5) * 360) / (2 * 3.14)) * 1440) / 360;
-
-        return thick;
+    String formatDegrees(double degrees){
+        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
     void tagToTelemetry(AprilTagDetection detection)
