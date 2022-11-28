@@ -19,11 +19,8 @@ public class Main extends LinearOpMode {
     public void runOpMode() {
         BNO055IMU.Parameters imuParameters;
         Orientation angles;
-        Acceleration gravity;
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-
-
         imuParameters = new BNO055IMU.Parameters();
 
         imuParameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -37,8 +34,6 @@ public class Main extends LinearOpMode {
             while (opModeIsActive()) {
 
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                gravity = imu.getGravity();
-                // Display orientation info.
                 telemetry.addData("rot about Z", angles.firstAngle);
 
                 telemetry.update();
