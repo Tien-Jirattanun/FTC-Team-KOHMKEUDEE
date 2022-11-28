@@ -1,55 +1,48 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "control")
-public class Main extends OpMode {
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-    DcMotor motor0;                     //RIGHT motor
-    DcMotor motor1;                     //LEFT motor
+@Autonomous(name = "IMU")
+public class Main extends LinearOpMode {
 
-    @Override
-    public void init() {
-        motor0 = hardwareMap.get(DcMotor.class ,"motor0");
-        motor1 = hardwareMap.get(DcMotor.class ,"motor1");
-    }
+    private BNO055IMU imu;
 
     @Override
-    public void loop() {
-        twoWheel();
-    }
+    public void runOpMode() {
+        BNO055IMU.Parameters imuParameters;
+        Orientation angles;
+        Acceleration gravity;
 
-    private void twoWheel(){
-        //check x,y
-        float x = gamepad1.left_stick_x;
-        float y = gamepad1.left_stick_y;
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
 
-        //button
-        boolean L1 = gamepad1.left_bumper;
 
-        //slow mode
-        if(L1 == true){
-            x /= 3;
-            y /= 3;
-        }
+        imuParameters = new BNO055IMU.Parameters();
 
-        //wheel
-        if(x == 0)
-        {
-            motor0.setPower(y);
-            motor1.setPower(y * -1);
-        }
-        else if(x > 0)
-        {
-            motor0.setPower(y - x);
-            motor1.setPower((y + x) * -1);
-        }
-        else if(x < 0)
-        {
-            motor0.setPower(y + (x * (-1)));
-            motor1.setPower((y - (x * (-1))) * -1);
+        imuParameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        imuParameters.loggingEnabled = false;
+        imu.initialize(imuParameters);
+
+        waitForStart();
+
+        if (opModeIsActive()) {
+            // Put run blocks here.
+            while (opModeIsActive()) {
+
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                gravity = imu.getGravity();
+                // Display orientation info.
+                telemetry.addData("rot about Z", angles.firstAngle);
+
+                telemetry.update();
+            }
         }
     }
 }
