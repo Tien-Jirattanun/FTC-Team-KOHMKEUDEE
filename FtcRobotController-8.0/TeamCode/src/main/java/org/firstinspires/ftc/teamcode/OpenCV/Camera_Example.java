@@ -1,19 +1,9 @@
 package org.firstinspires.ftc.teamcode.OpenCV;
 
-
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -21,15 +11,11 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 @Autonomous(name = "AR and Run")
 public class Camera_Example extends LinearOpMode
 {
 
-    private BNO055IMU imu;
-
-    int encoderData = 0;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
@@ -56,12 +42,15 @@ public class Camera_Example extends LinearOpMode
 
     AprilTagDetection tagOfInterest = null;
 
-
+    int numFramesWithoutDetection = 0;
+    final float DECIMATION_HIGH = 3;
+    final float DECIMATION_LOW = 2;
+    final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
+    final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
 
     @Override
     public void runOpMode()
     {
-
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
@@ -82,166 +71,65 @@ public class Camera_Example extends LinearOpMode
             }
         });
 
+        waitForStart();
+
         telemetry.setMsTransmissionInterval(50);
 
-        while (!isStarted() && !isStopRequested())
+        while (opModeIsActive())
         {
-            ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+            // Calling getDetectionsUpdate() will only return an object if there was a new frame
+            // processed since the last time we called it. Otherwise, it will return null. This
+            // enables us to only run logic when there has been a new frame, as opposed to the
+            // getLatestDetections() method which will always return an object.
+            ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
 
-            if(currentDetections.size() != 0)
+            // If there's been a new frame...
+            if(detections != null)
             {
-                boolean tagFound = false;
+                telemetry.addData("FPS", camera.getFps());
+                telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
+                telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
 
-                for(AprilTagDetection tag : currentDetections)
+                // If we don't see any tags
+                if(detections.size() == 0)
                 {
-                    if(tag.id == one || tag.id == two || tag.id == three)
+                    numFramesWithoutDetection++;
+
+                    // If we haven't seen a tag for a few frames, lower the decimation
+                    // so we can hopefully pick one up if we're e.g. far back
+                    if(numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION)
                     {
-                        tagOfInterest = tag;
-                        tagFound = true;
-                        break;
+                        aprilTagDetectionPipeline.setDecimation(DECIMATION_LOW);
                     }
                 }
-
-                if(tagFound)
-                {
-                    telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
-                    tagToTelemetry(tagOfInterest);
-                }
+                // We do see tags!
                 else
                 {
-                    telemetry.addLine("Don't see tag of interest :(");
+                    numFramesWithoutDetection = 0;
 
-                    if(tagOfInterest == null)
+                    // If the target is within 1 meter, turn on high decimation to
+                    // increase the frame rate
+                    if(detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS)
                     {
-                        telemetry.addLine("(The tag has never been seen)");
+                        aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
                     }
-                    else
+
+                    for(AprilTagDetection detection : detections)
                     {
-                        telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
-                        tagToTelemetry(tagOfInterest);
+                        telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
+                        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
+                        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
+                        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
+                        telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
+                        telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
+                        telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
                     }
                 }
 
-            }
-            else
-            {
-                telemetry.addLine("Don't see tag of interest :(");
-
-                if(tagOfInterest == null)
-                {
-                    telemetry.addLine("(The tag has never been seen)");
-                }
-                else
-                {
-                    telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
-                    tagToTelemetry(tagOfInterest);
-                }
-
+                telemetry.update();
             }
 
-            telemetry.update();
             sleep(20);
         }
-
-        //motor and servo zone
-
-        DcMotorEx motor0;                     //RIGHT motor
-        DcMotorEx motor1;                     //LEFT motor
-        DcMotorEx motor2;
-        DcMotorEx motor3;
-
-        DcMotorEx motor4;
-
-
-        if (opModeIsActive()) {
-
-            //IMU
-            BNO055IMU.Parameters imuParameters;
-            Orientation angles;
-
-            //Getting data
-            /*
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            telemetry.addData("rot about X", angles.thirdAngle);
-             */
-
-            motor0 = hardwareMap.get(DcMotorEx.class, "motor0");
-            motor1 = hardwareMap.get(DcMotorEx.class, "motor1");
-            motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
-            motor3 = hardwareMap.get(DcMotorEx.class, "motor3");
-            motor4 = hardwareMap.get(DcMotorEx.class, "motor4");
-
-            motor0.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-            motor1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-            motor2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-            motor3.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
-            waitForStart();
-
-            motor4.setTargetPosition(encoderData);
-            motor4.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            motor4.setVelocity(1440);
-
-
-            //IMU
-
-//            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-//            telemetry.addData("pitch", formatAngle(angles.angleUnit, angles.thirdAngle));
-
-
-
-
-
-            //after the run
-            if (tagOfInterest.id == one){
-                telemetry.addData("task","Go One");
-                telemetry.update();
-
-                //High junction
-                motor0.setTargetPosition(-2360);
-                motor1.setTargetPosition(2360);
-                motor2.setTargetPosition(-2360);
-                motor3.setTargetPosition(2360);
-
-            }
-            else if(tagOfInterest.id == two){
-                telemetry.addData("task","Go Two");
-                telemetry.update();
-                //High junction
-                motor0.setTargetPosition(-2360);
-                motor1.setTargetPosition(2360);
-                motor2.setTargetPosition(-2360);
-                motor3.setTargetPosition(2360);
-            }
-            else if(tagOfInterest.id == three){
-                telemetry.addData("task", "Go Three");
-                telemetry.update();
-                //High junction
-                motor0.setTargetPosition(-2360);
-                motor1.setTargetPosition(2360);
-                motor2.setTargetPosition(-2360);
-                motor3.setTargetPosition(2360);
-            }
-
-        }
-    }
-
-    String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
-    }
-
-    String formatDegrees(double degrees){
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
-    }
-
-    void tagToTelemetry(AprilTagDetection detection)
-    {
-        telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
-        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
-        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
-        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
-        telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
-        telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
-        telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
 }
