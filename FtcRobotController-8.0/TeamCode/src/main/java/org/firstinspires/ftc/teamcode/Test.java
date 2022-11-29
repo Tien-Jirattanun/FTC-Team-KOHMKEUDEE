@@ -63,6 +63,7 @@ public class Test extends LinearOpMode {
             motorVelocity2 = 0;
 
 
+
             if(gamepad1.start || gamepad1.right_stick_button){
                 motorVelocity0 /= 3;
                 motorVelocity1 /= 3;
@@ -93,6 +94,7 @@ public class Test extends LinearOpMode {
                 motor0.setVelocity(motorVelocity1);
                 motor2.setVelocity(motorVelocity0);
             }
+
             //rotate
             else if(gamepad1.right_stick_x > 0){
                 motor0.setVelocity(motorVelocity0);
@@ -125,44 +127,21 @@ public class Test extends LinearOpMode {
             }
             else if(gamepad1.left_bumper) {
 
-                if (encoderData >= -6300) {
-                    encoderData += 800;
-                    motor4.setTargetPosition(encoderData);
-                    sleep(800);
-                    servo0.setPosition(1);
-                    servo1.setPosition(0);
-                    encoderData = 0;
-                }
-                else if (encoderData >= -10900) {
-                    encoderData += 800;
-                    motor4.setTargetPosition(encoderData);
-                    sleep(800);
-                    servo0.setPosition(1);
-                    servo1.setPosition(0);
-                    encoderData = 0;
-                }
-                else if (encoderData >= -14340) {
-                    encoderData += 800;
-                    motor4.setTargetPosition(encoderData);
-                    sleep(800);
-                    servo0.setPosition(1);
-                    servo1.setPosition(0);
-                    encoderData = 0;
-                }
-                motor4.setTargetPosition(encoderData);
+                servo0.setPosition(1);
+                servo1.setPosition(0);
             }
 
             //arm
 
-            if(gamepad1.cross && encoderData > -6300){
-                encoderData = -6250;
+            if(gamepad1.cross){
+                encoderData -= 10;
             }
-            else if(gamepad1.square && encoderData > -10900) {
-                encoderData = -10850;
-            }
-            else if(gamepad1.triangle && encoderData > -14340){
-                encoderData = -14290;
-            }
+//            else if(gamepad1.square && encoderData > -10900) {
+//                encoderData = -10850;
+//            }
+//            else if(gamepad1.triangle && encoderData > -14340){
+//                encoderData = -14290;
+//            }
             else if(gamepad1.circle){
                 encoderData = 0;
             }
