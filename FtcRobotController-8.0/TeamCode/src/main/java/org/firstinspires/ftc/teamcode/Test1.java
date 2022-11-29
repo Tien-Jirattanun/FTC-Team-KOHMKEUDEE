@@ -134,15 +134,15 @@ public class Test1 extends LinearOpMode {  //This class extends from LinearOpMod
 
             //arm
 
-            if(gamepad1.cross){
-                encoderData -= 10;
+            if(gamepad1.cross && encoderData > -4600){
+                encoderData = -4595;
             }
-//            else if(gamepad1.square && encoderData > -10900) {
-//                encoderData = -10850;
-//            }
-//            else if(gamepad1.triangle && encoderData > -14340){
-//                encoderData = -14290;
-//            }
+            else if(gamepad1.square && encoderData > -7590) {
+                encoderData = -7585;
+            }
+            else if(gamepad1.triangle && encoderData > -10600){
+                encoderData = -10550;
+            }
             else if(gamepad1.circle){
                 encoderData = 0;
             }

@@ -49,7 +49,7 @@ public class Test extends LinearOpMode {  //This class extends from LinearOpMode
 
         motor4.setTargetPosition(encoderData);
         motor4.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        motor4.setVelocity(1440);
+        motor4.setVelocity(2400);
 
         while (opModeIsActive()) {
 
@@ -128,15 +128,15 @@ public class Test extends LinearOpMode {  //This class extends from LinearOpMode
 
             //arm
 
-            if(gamepad1.cross){
-                encoderData -= 10;
+            if(gamepad1.cross && encoderData > -4600){
+                encoderData = -4595;
             }
-//            else if(gamepad1.square && encoderData > -10900) {
-//                encoderData = -10850;
-//            }
-//            else if(gamepad1.triangle && encoderData > -14340){
-//                encoderData = -14290;
-//            }
+            else if(gamepad1.square && encoderData > -7590) {
+                encoderData = -7585;
+            }
+            else if(gamepad1.triangle && encoderData > -10600){
+                encoderData = -10550;
+            }
             else if(gamepad1.circle){
                 encoderData = 0;
             }
