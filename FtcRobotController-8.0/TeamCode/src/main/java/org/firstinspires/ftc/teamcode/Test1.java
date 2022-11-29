@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import static java.lang.Math.sqrt;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "Control1")                //The name of the program
-public class Test extends LinearOpMode {  //This class extends from LinearOpMode
+@TeleOp(name = "Control2")                //The name of the program
+public class Test1 extends LinearOpMode {  //This class extends from LinearOpMode
 
     DcMotorEx motor0;
     DcMotorEx motor1;
@@ -42,6 +44,10 @@ public class Test extends LinearOpMode {  //This class extends from LinearOpMode
         double motorVelocity2 = 0;
         double X = gamepad1.left_stick_x;
         double Y = gamepad1.left_stick_y;
+        double W1 = (-(sqrt(2)/2)*X + (sqrt(2)/2)*Y)*1440;
+        double W2 = (-(sqrt(2)/2)*X + -(sqrt(2)/2)*Y)*1440;
+        double W3 = ((sqrt(2)/2)*X + -(sqrt(2)/2)*Y)*1440;
+        double W4 = ((sqrt(2)/2)*X + (sqrt(2)/2)*Y)*1440;
 
         int encoderData = 0;
 
@@ -59,35 +65,35 @@ public class Test extends LinearOpMode {  //This class extends from LinearOpMode
 
 
 
-            if(gamepad1.start || gamepad1.right_stick_button){
+            if(gamepad1.start || gamepad1.right_stick_button || gamepad1.back){
                 motorVelocity0 /= 3;
                 motorVelocity1 /= 3;
                 motorVelocity2 /= 3;
             }
 
             if (gamepad1.dpad_up){
-                motor0.setVelocity(motorVelocity1);
-                motor1.setVelocity(motorVelocity0);
-                motor2.setVelocity(motorVelocity1);
-                motor3.setVelocity(motorVelocity0);
+                motor0.setVelocity(W1);
+                motor1.setVelocity(W2);
+                motor2.setVelocity(W3);
+                motor3.setVelocity(W4);
             }
             else if (gamepad1.dpad_down){
-                motor0.setVelocity(motorVelocity0);
-                motor1.setVelocity(motorVelocity1);
-                motor2.setVelocity(motorVelocity0);
-                motor3.setVelocity(motorVelocity1);
+                motor0.setVelocity(W1);
+                motor1.setVelocity(W2);
+                motor2.setVelocity(W3);
+                motor3.setVelocity(W4);
             }
             else if(gamepad1.dpad_left){
-                motor2.setVelocity(motorVelocity1);
-                motor0.setVelocity(motorVelocity0);
-                motor3.setVelocity(motorVelocity1);
-                motor1.setVelocity(motorVelocity0);
+                motor0.setVelocity(W1);
+                motor1.setVelocity(W2);
+                motor2.setVelocity(W3);
+                motor3.setVelocity(W4);
             }
             else if(gamepad1.dpad_right){
-                motor1.setVelocity(motorVelocity1);
-                motor3.setVelocity(motorVelocity0);
-                motor0.setVelocity(motorVelocity1);
-                motor2.setVelocity(motorVelocity0);
+                motor0.setVelocity(W1);
+                motor1.setVelocity(W2);
+                motor2.setVelocity(W3);
+                motor3.setVelocity(W4);
             }
 
             //rotate
@@ -149,6 +155,10 @@ public class Test extends LinearOpMode {  //This class extends from LinearOpMode
             telemetry.addData("thick arm : ",motor4.getCurrentPosition());
             telemetry.addData("velocity", motor4.getVelocity());
             telemetry.addData("kuay",encoderData);
+            telemetry.addData("X",X);
+            telemetry.addData("Y",Y);
+            telemetry.addData("W3",W3);
+            telemetry.addData("W4",W4);
             telemetry.update();
         }
 
