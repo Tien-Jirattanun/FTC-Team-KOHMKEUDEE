@@ -40,7 +40,9 @@ public class Test extends LinearOpMode {  //This class extends from LinearOpMode
         double motorVelocity0 = 1440;                                               //Set the velocity of the motor encoder in the unit thick/sec
         double motorVelocity1 = -1440;
         double motorVelocity2 = 0;
-        double X = gamepad1.right_stick_x;
+        double X = gamepad1.left_stick_x;
+        double Y = gamepad1.left_stick_y;
+//        double W1 = -
 
         int encoderData = 0;
 
