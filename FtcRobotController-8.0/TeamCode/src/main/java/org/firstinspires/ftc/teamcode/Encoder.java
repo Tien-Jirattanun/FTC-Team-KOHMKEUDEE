@@ -57,8 +57,6 @@ public class Encoder extends LinearOpMode {
         }
 
 
-
-
     }
 
 
