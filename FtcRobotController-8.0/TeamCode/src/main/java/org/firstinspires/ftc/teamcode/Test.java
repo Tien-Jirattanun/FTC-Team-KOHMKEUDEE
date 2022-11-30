@@ -128,18 +128,18 @@ public class Test extends LinearOpMode {  //This class extends from LinearOpMode
 
             //arm
 
-            if(gamepad1.cross && encoderData > -4600){
-                encoderData = -4595;
+            if(gamepad1.cross){
+                encoderData -= 10;
             }
-            else if(gamepad1.square && encoderData > -7590) {
-                encoderData = -7585;
-            }
-            else if(gamepad1.triangle && encoderData > -10600){
-                encoderData = -10550;
-            }
-            else if(gamepad1.circle){
-                encoderData = 0;
-            }
+//            else if(gamepad1.square && encoderData > -7590) {
+//                encoderData = -7585;
+//            }
+//            else if(gamepad1.triangle && encoderData > -10600){
+//                encoderData = -10550;
+//            }
+//            else if(gamepad1.circle){
+//                encoderData = 0;
+//            }
             motor4.setTargetPosition(encoderData);
 
             telemetry.addData("thick0 : ", motor0.getCurrentPosition());
