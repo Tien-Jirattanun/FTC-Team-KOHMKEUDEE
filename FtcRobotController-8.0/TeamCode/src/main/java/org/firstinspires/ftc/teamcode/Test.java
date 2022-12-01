@@ -92,16 +92,16 @@ public class Test extends LinearOpMode {  //This class extends from LinearOpMode
 
             //rotate
             else if(gamepad1.right_stick_x > 0){
-                motor0.setVelocity(motorVelocity0);
-                motor1.setVelocity(motorVelocity0);
-                motor2.setVelocity(motorVelocity0);
-                motor3.setVelocity(motorVelocity0);
-            }
-            else if(gamepad1.right_stick_x < 0){
                 motor0.setVelocity(motorVelocity1);
                 motor1.setVelocity(motorVelocity1);
                 motor2.setVelocity(motorVelocity1);
                 motor3.setVelocity(motorVelocity1);
+            }
+            else if(gamepad1.right_stick_x < 0){
+                motor0.setVelocity(motorVelocity0);
+                motor1.setVelocity(motorVelocity0);
+                motor2.setVelocity(motorVelocity0);
+                motor3.setVelocity(motorVelocity0);
             }
             else {
                 motor0.setVelocity(motorVelocity2);
